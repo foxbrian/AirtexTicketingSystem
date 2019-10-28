@@ -1,0 +1,61 @@
+*{
+	overflow: none;
+	font-size:1.5vw;
+}
+
+html{
+	padding: 1vh 0 0 0;
+	margin: 0 0 0 0;
+}
+
+	body{
+	padding: 0 0 0 0;
+	margin: 0 0 0 0;
+}
+.search{
+	border-radius: 5px 5px 5px 5px;
+}
+.searchButton{
+	border-radius: 5px 5px 5px 5px;
+}
+
+.tasksContainer{
+	margin: 1vh 0 0 10vw;
+	width: 80vw;
+
+}
+
+.stationButtonContainer{
+	position: fixed;
+	width: 8vw;
+	padding: 1vh .2vw 0 .2vw;
+	margin: 1vh 0 0 0;
+	border: .1vh solid black;
+	border-left:none;
+	border-radius: 0 5px 5px 0;
+}
+.stationButton{
+	border: .1vh solid black;
+	padding: .1vh .1vw .1vh .1vw;
+	margin-bottom: 1vh;
+	border-radius: 0px 5px 5px 0px;
+}
+.redClickable:hover{
+	color: red;
+	cursor: pointer;
+}
+.taskTable{
+	border: 1px solid black;
+	text-align:left;
+	text-transform: capitalize;
+	border-radius: 5px 5px 5px 5px;
+}
+.taskTable td{
+	width: 15vw;
+	padding: .3vh .3vw .3vh .3vw;
+
+}
+.taskTable tr:nth-child(even){
+	background-color: #ffb6a8;
+	
+}
