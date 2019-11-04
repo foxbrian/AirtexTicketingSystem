@@ -59,7 +59,7 @@ http.createServer(function (req,res){
 						'<th>Last Name</th>'+
 						'<th>Installation</th></tr>';
 					result.forEach((item) => {
-						outputHTML += '<tr onclick="window.location=\'/\';"><td>'+
+						outputHTML += '<tr class="redClickable" onclick="window.location=\'/\';"><td>'+
 							item.orderId+
 							'</td><td>'+'to be implemented'//(item.date.getMonth()+1)+'/'+i;tem.date.getDate()+
 							'</td><td>'+item.firstName+
@@ -93,7 +93,7 @@ http.createServer(function (req,res){
 						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy=Material\'">Primary Material</th>'+
 						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy=Material\'">Trim Material</th></tr>';
 					result.forEach((item) => {
-						outputHTML += '<tr class="taskRow" onclick="window.location=\'/taskView?taskId='+item.taskId+'\';"><td>'+
+						outputHTML += '<tr class="redClickable taskRow" onclick="window.location=\'/taskView?taskId='+item.taskId+'\';"><td>'+
 							item.part+
 							'</td><td>'+(item.date.getMonth()+1)+'/'+item.date.getDate()+
 							'</td><td>'+item.pattern+
