@@ -1,7 +1,7 @@
 *{
 	overflow: none;
 	font-size:1.5vw;
-	font-family: Impact, Charcoal, sans-serif;
+	font-family: Roboto, Charcoal, sans-serif;
 }
 
 html{
@@ -45,7 +45,7 @@ body{
 	border-radius: 0px 5px 5px 0px;
 }
 .redClickable:hover{
-	color: #57AE9B;
+	color: black;
 	cursor: pointer;
 }
 .taskTable{
