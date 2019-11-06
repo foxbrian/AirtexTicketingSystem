@@ -53,11 +53,11 @@ http.createServer(function (req,res){
 					(err3,result) => {
 
 					if(err3) console.log(err3);
-					var outputHTML = '<table  class="orderTable"><tr><th>Order ID</th>'+
-						'<th>Date Ordered</th>'+
-						'<th>First Name</th>'+
-						'<th>Last Name</th>'+
-						'<th>Installation</th></tr>';
+					var outputHTML = '<table class="taskTable"><tr><th>Order ID</th>'+
+						'<th class="redClickeable">Date Ordered</th>'+
+						'<th class="redClickeable">First Name</th>'+
+						'<th class="redClickeable">Last Name</th>'+
+						'<th class="redClickeable">Installation</th></tr>';
 					result.forEach((item) => {
 						outputHTML += '<tr class="redClickable" onclick="window.location=\'/\';"><td>'+
 							item.orderId+
