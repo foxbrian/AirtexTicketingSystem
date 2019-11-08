@@ -88,10 +88,10 @@ http.createServer(function (req,res){
 					if(err3) console.log(err3);
 
 					var outputHTML = '<table class="taskTable"><tr><th>Part</th>'+
-						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy=Date\'">Date</th>'+
-						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy=Pattern\'">Pattern</th>'+
-						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy=Material\'">Primary Material</th>'+
-						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy=Material\'">Trim Material</th></tr>';
+						'<th class="" onclick="window.location=\''+q.pathname+'?sortBy=Date\'">Date</th>'+
+						'<th class="" onclick="window.location=\''+q.pathname+'?sortBy=Pattern\'">Pattern</th>'+
+						'<th class="" onclick="window.location=\''+q.pathname+'?sortBy=Material\'">Primary Material</th>'+
+						'<th class="" onclick="window.location=\''+q.pathname+'?sortBy=Material\'">Trim Material</th></tr>';
 					result.forEach((item) => {
 						outputHTML += '<tr class="taskRow" onclick="window.location=\'/taskView?taskId='+item.taskId+'\';"><td>'+
 							item.part+
