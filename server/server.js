@@ -53,10 +53,10 @@ http.createServer(function (req,res){
 					(err3,result) => {
 
 					if(err3) console.log(err3);
-					var outputHTML = '<table class="taskTable"><tr><th class="redClickable">Order ID</th>'+
-						'<th class="redClickable">Date Ordered</th>'+
-						'<th class="redClickable">First Name</th>'+
-						'<th class="redClickable">Last Name</th>'+
+					var outputHTML = '<table class="taskTable"><tr><th class="">Order ID</th>'+
+						'<th class="">Date Ordered</th>'+
+						'<th class="">First Name</th>'+
+						'<th class="">Last Name</th>'+
 						'<th class="redClickable">Installation</th></tr>';
 					result.forEach((item) => {
 						outputHTML += '<tr class="redClickable" onclick="window.location=\'/\';"><td>'+
@@ -93,7 +93,7 @@ http.createServer(function (req,res){
 						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy=Material\'">Primary Material</th>'+
 						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy=Material\'">Trim Material</th></tr>';
 					result.forEach((item) => {
-						outputHTML += '<tr class="redClickable taskRow" onclick="window.location=\'/taskView?taskId='+item.taskId+'\';"><td>'+
+						outputHTML += '<tr class="taskRow" onclick="window.location=\'/taskView?taskId='+item.taskId+'\';"><td>'+
 							item.part+
 							'</td><td>'+(item.date.getMonth()+1)+'/'+item.date.getDate()+
 							'</td><td>'+item.pattern+

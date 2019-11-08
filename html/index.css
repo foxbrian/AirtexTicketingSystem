@@ -22,6 +22,7 @@ body{
 }
 
 .tasksContainer{
+	background-color:black;
 	color:white;
 	margin: 1vh 0 0 10vw;
 	width: 80vw;
@@ -32,15 +33,16 @@ body{
 	color:white;
 	position: fixed;
 	width: 8vw;
-	padding: 1vh .2vw 0 .2vw;
+	padding: 1vh .2vw 0 0;
 	margin: 1vh 0 0 0;
-	border: .1vh solid black;
+	//border: .1vh solid black;
 	border-left:none;
 	border-radius: 0 5px 5px 0;
 }
 .stationButton{
-	border: .1vh solid black;
-	padding: .1vh .1vw .1vh .1vw;
+	background-color: black;
+	//border: .1vh solid black;
+	padding: .1vh .1vw .1vh .3vw;
 	margin-bottom: 1vh;
 	border-radius: 0px 5px 5px 0px;
 }
@@ -49,7 +51,7 @@ body{
 	cursor: pointer;
 }
 .taskTable{
-	border: 1px solid black;
+	//border: 1px solid black;
 	text-align:left;
 	text-transform: capitalize;
 	border-radius: 5px 5px 5px 5px;
@@ -62,4 +64,7 @@ body{
 .taskTable tr:nth-child(even){
 	background-color: #57AE9B;
 	
+}
+.taskTable tr:nth-child(odd):hover{
+	color: #57AE9B;
 }
