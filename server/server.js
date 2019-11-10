@@ -12,22 +12,82 @@ var activeDB = mysql.createPool({
 	database 	:	"airtex"
 });
 
+//SQL queries for each filter and sort combination
 const responsibilities = {
-	'/seatCutters'	: 'part="seat assembly" and cut=0',
-	'/wallCutters'	: '(part="wall assembly" or part="carpet") and cut=0',
-	'/seatSewers'	: 'part="seat assembly" and cut=1 and sewn=0',
-	'/carpetSewers'	: 'null',
-	'/miscCutters'	: 'null',
-	'/foamers'	: 'null',
-	'/gluers'	: 'null'
+	'/seatCutters'	: {
+		'Date'			: 'select * from tasks where part="seat assembly" and cut=0 order by date asc;',
+		'Pattern'		: 'select * from tasks where part="seat assembly" and cut=0 order by pattern asc, date asc;',
+		'Material'		: 'select * from tasks where part="seat assembly" and cut=0 order by fabricOne asc, fabricTwo asc, date asc;'
+		'TrimMaterial'		: 'select * from tasks where part="seat assembly" and cut=0 order by fabricTwo asc, fabricOne asc, date asc;'
+		'DateDesc'		: 'select * from tasks where part="seat assembly" and cut=0 order by date desc;',
+		'PatternDesc'		: 'select * from tasks where part="seat assembly" and cut=0 order by pattern desc, date asc;',
+		'MaterialDesc'		: 'select * from tasks where part="seat assembly" and cut=0 order by fabricOne desc, fabricTwo asc, date asc;'
+		'TrimMaterialDesc'	: 'select * from tasks where part="seat assembly" and cut=0 order by fabricTwo desc, fabricOne asc, date asc;'
+	},
+	'/wallCutters'	: {
+		'Date'			: 'select * from tasks where part="wall assembly" or part="carpet" and cut=0 order by date asc;',
+		'Pattern'		: 'select * from tasks where part="wall assembly" or part="carpet" and cut=0 order by pattern asc, date asc;',
+		'Material'		: 'select * from tasks where part="wall assembly" or part="carpet" and cut=0 order by fabricOne asc, fabricTwo asc, date asc;'
+		'TrimMaterial'		: 'select * from tasks where part="wall assembly" or part="carpet" and cut=0 order by fabricTwo asc, fabricOne asc, date asc;'
+		'DateDesc'		: 'select * from tasks where part="wall assembly" or part="carpet" and cut=0 order by date desc;',
+		'PatternDesc'		: 'select * from tasks where part="wall assembly" or part="carpet" and cut=0 order by pattern desc, date asc;',
+		'MaterialDesc'		: 'select * from tasks where part="wall assembly" or part="carpet" and cut=0 order by fabricOne desc, fabricTwo asc, date asc;'
+		'TrimMaterialDesc'	: 'select * from tasks where part="wall assembly" or part="carpet" and cut=0 order by fabricTwo desc, fabricOne asc, date asc;'
+	},
+	'/seatSewers'	: {
+		'Date'			: 'select * from tasks where part="seat assembly" and cut=1 and sewn=0 order by date asc;',
+		'Pattern'		: 'select * from tasks where part="seat assembly" and cut=1 and sewn=0 order by pattern asc, date asc;',
+		'Material'		: 'select * from tasks where part="seat assembly" and cut=1 and sewn=0 order by fabricOne asc, fabricTwo asc, date asc;'
+		'TrimMaterial'		: 'select * from tasks where part="seat assembly" and cut=1 and sewn=0 order by fabricTwo asc, fabricOne asc, date asc;'
+		'DateDesc'		: 'select * from tasks where part="seat assembly" and cut=1 and sewn=0 order by date desc;',
+		'PatternDesc'		: 'select * from tasks where part="seat assembly" and cut=1 and sewn=0 order by pattern desc, date asc;',
+		'MaterialDesc'		: 'select * from tasks where part="seat assembly" and cut=1 and sewn=0 order by fabricOne desc, fabricTwo asc, date asc;'
+		'TrimMaterialDesc'	: 'select * from tasks where part="seat assembly" and cut=1 and sewn=0 order by fabricTwo desc, fabricOne asc, date asc;'
+	},
+	//all queries past this point are stand-ins and just return seat sewers
+	'/carpetSewers'	: {
+		'Date'			: 'select * from tasks where part="seat assembly" and cut=0 order by date asc;',
+		'Pattern'		: 'select * from tasks where part="seat assembly" and cut=0 order by pattern asc, date asc;',
+		'Material'		: 'select * from tasks where part="seat assembly" and cut=0 order by fabricOne asc, fabricTwo asc, date asc;'
+		'TrimMaterial'		: 'select * from tasks where part="seat assembly" and cut=0 order by fabricTwo asc, fabricOne asc, date asc;'
+		'DateDesc'		: 'select * from tasks where part="seat assembly" and cut=0 order by date desc;',
+		'PatternDesc'		: 'select * from tasks where part="seat assembly" and cut=0 order by pattern desc, date asc;',
+		'MaterialDesc'		: 'select * from tasks where part="seat assembly" and cut=0 order by fabricOne desc, fabricTwo asc, date asc;'
+		'TrimMaterialDesc'	: 'select * from tasks where part="seat assembly" and cut=0 order by fabricTwo desc, fabricOne asc, date asc;'
+	},
+	'/miscCutters'	: {
+		'Date'			: 'select * from tasks where part="seat assembly" and cut=0 order by date asc;',
+		'Pattern'		: 'select * from tasks where part="seat assembly" and cut=0 order by pattern asc, date asc;',
+		'Material'		: 'select * from tasks where part="seat assembly" and cut=0 order by fabricOne asc, fabricTwo asc, date asc;'
+		'TrimMaterial'		: 'select * from tasks where part="seat assembly" and cut=0 order by fabricTwo asc, fabricOne asc, date asc;'
+		'DateDesc'		: 'select * from tasks where part="seat assembly" and cut=0 order by date desc;',
+		'PatternDesc'		: 'select * from tasks where part="seat assembly" and cut=0 order by pattern desc, date asc;',
+		'MaterialDesc'		: 'select * from tasks where part="seat assembly" and cut=0 order by fabricOne desc, fabricTwo asc, date asc;'
+		'TrimMaterialDesc'	: 'select * from tasks where part="seat assembly" and cut=0 order by fabricTwo desc, fabricOne asc, date asc;'
+	},
+	'/foamers'	:{
+		'Date'			: 'select * from tasks where part="seat assembly" and cut=0 order by date asc;',
+		'Pattern'		: 'select * from tasks where part="seat assembly" and cut=0 order by pattern asc, date asc;',
+		'Material'		: 'select * from tasks where part="seat assembly" and cut=0 order by fabricOne asc, fabricTwo asc, date asc;'
+		'TrimMaterial'		: 'select * from tasks where part="seat assembly" and cut=0 order by fabricTwo asc, fabricOne asc, date asc;'
+		'DateDesc'		: 'select * from tasks where part="seat assembly" and cut=0 order by date desc;',
+		'PatternDesc'		: 'select * from tasks where part="seat assembly" and cut=0 order by pattern desc, date asc;',
+		'MaterialDesc'		: 'select * from tasks where part="seat assembly" and cut=0 order by fabricOne desc, fabricTwo asc, date asc;'
+		'TrimMaterialDesc'	: 'select * from tasks where part="seat assembly" and cut=0 order by fabricTwo desc, fabricOne asc, date asc;'
+	},
+	'/gluers'	: { 
+		'Date'			: 'select * from tasks where part="seat assembly" and cut=0 order by date asc;',
+		'Pattern'		: 'select * from tasks where part="seat assembly" and cut=0 order by pattern asc, date asc;',
+		'Material'		: 'select * from tasks where part="seat assembly" and cut=0 order by fabricOne asc, fabricTwo asc, date asc;'
+		'TrimMaterial'		: 'select * from tasks where part="seat assembly" and cut=0 order by fabricTwo asc, fabricOne asc, date asc;'
+		'DateDesc'		: 'select * from tasks where part="seat assembly" and cut=0 order by date desc;',
+		'PatternDesc'		: 'select * from tasks where part="seat assembly" and cut=0 order by pattern desc, date asc;',
+		'MaterialDesc'		: 'select * from tasks where part="seat assembly" and cut=0 order by fabricOne desc, fabricTwo asc, date asc;'
+		'TrimMaterialDesc'	: 'select * from tasks where part="seat assembly" and cut=0 order by fabricTwo desc, fabricOne asc, date asc;'
+	}
 };
 
-const sort = {
-	'Date'		: 'date asc;',
-	'Pattern'	: 'pattern asc, date asc;',
-	'Material'	: 'fabricOne asc, fabricTwo asc, date asc;'
-};
-
+//text used to build the header of HTTP message
 var mime = {
 	html: 'text/html',
 	txt: 'text/plain',
@@ -61,7 +121,7 @@ http.createServer(function (req,res){
 					result.forEach((item) => {
 						outputHTML += '<tr class="redClickable" onclick="window.location=\'/\';"><td>'+
 							item.orderId+
-							'</td><td>'+'to be implemented'//(item.date.getMonth()+1)+'/'+i;tem.date.getDate()+
+							'</td><td>'+(item.date.getMonth()+1)+'/'+item.date.getDate()+
 							'</td><td>'+item.firstName+
 							'</td><td>'+item.lastName+
 							'</td><td>'+item.installation == 1 ? "Install": "No Install"+
@@ -83,15 +143,19 @@ http.createServer(function (req,res){
 			if(err)	console.log(err);
 
 			fs.readFile('/var/www/html/shellend',(err,data2) =>{
-				activeDB.query('select * from tasks where '+responsibilities[q.pathname]+' order by '+sort[q.query.sortBy],
+				activeDB.query(responsibilities[q.pathname][q.query.sortBy],
 					(err3,result) => {
 					if(err3) console.log(err3);
 
 					var outputHTML = '<table class="taskTable"><tr><th class="redClickable">Part</th>'+
-						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy=Date\'">Date</th>'+
-						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy=Pattern\'">Pattern</th>'+
-						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy=Material\'">Primary Material</th>'+
-						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy=Material\'">Trim Material</th></tr>';
+						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy='+
+							(q.query.sortBy=='Date'?'DateDesc':'Date')+'\'">Date</th>'+
+						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy='+
+							(q.query.sortBy=='Pattern'?'PatternDesc':'Pattern')+'\'">Pattern</th>'+
+						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy='+
+							(q.query.sortBy=='Material'?'MaterialDesc':'Material')+'\'">Primary Material</th>'+
+						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy='+
+							(q.query.sortBy=='TrimMaterial'?'TrimMaterialDesc':'TrimMaterial')+'\'">Trim Material</th></tr>';
 					result.forEach((item) => {
 						outputHTML += '<tr class="taskRow" onclick="window.location=\'/taskView?taskId='+item.taskId+'\';"><td>'+
 							item.part+
