@@ -180,7 +180,7 @@ http.createServer(function (req,res){
 			
 	else if(q.query.taskId != undefined){
 		if(q.query.action=="lock"){
-			
+
 			activeDB.query('update tasks set locked=1 where taskId='+q.query.taskId,(err,result) =>{
 				if(err) {
 					console.log(err);
@@ -189,7 +189,8 @@ http.createServer(function (req,res){
 			});
 			
 			res.writeHead(200,'{"Content-Type": "text/html"}');
-			res.write('<html><head><link rel="stylesheet" type="text/css" href="index.css"/></head><body onload="window.history.back()">redirecting</body></html>');
+			res.write('<html><head><link rel="stylesheet" type="text/css" href="index.css"/></head>'+
+				'<body onload="window.history.back()"><div class="redirecting">redirecting</div></body></html>');
 			res.end();
 		}
 		else if(q.query.action=="complete"){
@@ -210,7 +211,8 @@ http.createServer(function (req,res){
 			});
 
 			res.writeHead(200,'{"Content-Type": "text/html"}');
-			res.write('<html><head><link rel="stylesheet" type="text/css" href="index.css"/></head><body onload="window.history.go(-2)">redirecting</body></html>');
+			res.write('<html><head><link rel="stylesheet" type="text/css" href="index.css"/></head>'+
+				'<body onload="window.history.go(-2)"><div class="redirecting">redirecting</div></body></html>');
 			res.end();
 		}
 		else{
@@ -237,6 +239,24 @@ http.createServer(function (req,res){
 				});
 			});
 		}
+	}
+	else if(q.query.pattern != undefined){
+		activeDB.query('insert into tasks(pattern,fabricOne,fabricTwo,part,date) values ("'+
+			q.query.pattern+'","'+q.query.fabricOne+'","'+q.query.fabricTwo+'","'+q.query.part+'",curdate());',
+			(err,result) => {
+			if(err)console.log(err);
+		});
+		fs.readFile(filename,(err,data) => {
+			if(err) {
+				res.writeHead(404, '{"Content-Type": "text/html"}');
+				res.write("<h1>404 not found</h1>");
+				res.end();
+				return;
+			}
+			res.writeHead(200, '{"Content-Type": "'+mime[q.pathname.split('.')[q.pathname.split('.').length-1]]+'"}');
+			res.write(data);
+			res.end();
+		});
 	}
 	else{
 		fs.readFile(filename,(err,data) => {
