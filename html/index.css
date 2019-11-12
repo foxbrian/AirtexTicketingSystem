@@ -1,77 +1,97 @@
 *{
 	overflow: none;
-	font-size:1.5vw;
+	font-size:1.2vw;
 	font-family: Roboto, Charcoal, sans-serif;
+	color: white;
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
 html{
 	padding: 0 0 0 0;
 	margin: 0 0 0 0;
-	background-image:linear-gradient(170deg, rgba(161,31,31,1) 0%, rgba(161,31,31,1) 75%, rgba(212,57,0,1) 100%);
+	background-color:#d1c99b;
 	height: 100%;
 }
-
 body{
 	padding: 0 0 0 0;
 	margin: 0 0 0 0;
 }
-.search{
+
+
+//General Classes
+.curvedCorners{
 	border-radius: 5px 5px 5px 5px;
 }
-.searchButton{
-	border-radius: 5px 5px 5px 5px;
+.standardPadding{
+	padding: 10px 10px 10px 10px;
 }
+.redBackground{
+	background-color: #ad2f2f;
+}
+.redBackground:hover{
+	background-color: #d1c99b;
+}
+.tanBackground{
+	background-color: #d1c99b;
+	cursor: pointer;
+}
+.tanBackground:hover{
+	background-color:#ad2f2f;
+	cursor: pointer;	
+}
+
 
 .tasksContainer{
-	background-color:gray;
-	color:white;
 	margin: 1vh 0 0 10vw;
 	width: 80vw;
-
+	border: 1px solid black;
 }
 
 .stationButtonContainer{
-	color:white;
 	position: fixed;
 	width: 8vw;
 	padding: 1vh .2vw 0 0;
-	margin: 0 0 0 0;
-	//border: .1vh solid black;
-	border-left:none;
-	border-radius: 0 5px 5px 0;
 }
 .stationButton{
-	background-color: gray;
-	//border: .1vh solid black;
-	padding: .1vh .1vw .1vh .3vw;
 	margin-bottom: 1vh;
-	border-radius: 0px 5px 5px 0px;
 }
 .redClickable:hover{
-	color: crimson;
+	color: #a85858;
 	cursor: pointer;
 }
 .taskTable{
-	//border: 1px solid black;
 	text-align:left;
 	text-transform: capitalize;
-	border-radius: 5px 5px 5px 5px;
 }
+
+
+
+
+
+
+
+
+
 .taskTable td{
 	width: 15vw;
 	padding: .5vh .5vw .5vh .5vw;
 
 }
 .taskTable tr:nth-child(even){
-	background-color: crimson;
+	background-color: #a85858;
 	
 }
 .taskTable tr:nth-child(odd):not(:first-child):hover{
-	color: crimson;
+	color: #a85858;
 	cursor: pointer;
 }
 .taskTable tr:nth-child(even):hover{
-        color: black;
+        color: ;
 	cursor: pointer;
  }
 
+.redirecting{
+	text-align: center;
+	font-size: 2em;
+	margin-top: 20vh;
+}
