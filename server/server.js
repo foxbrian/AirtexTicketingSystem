@@ -13,82 +13,103 @@ var activeDB = mysql.createPool({
 });
 
 //SQL queries for each filter and sort combination
+const seatCutterParts = 'part="seat assembly" and cut=0';
+const wallCutterParts = '(part="wall panel" or part="carpet") and cut=0';
+const seatSewerParts = '(part="wind sock" or part="seat sling" or part="baggage compartment" or part="draft boot" or part="shock cord boot" or part="seat assembly") and cut=1 and sewn=0';
+const carpetSewerParts = 'part="carpet" and cut=1 and sewn=0';
+const miscCutterParts = '(part="wind sock" or part="seat sling" or part="baggage compartment" or part="draft boot" or part="shock cord boot" or part="headliner") and cut=0';
+const gluerParts= '(part="carpet" and sewn=1 and finished = 0) or ((part="wall panel" or part="firewall") and cut=1 and finished=0)';
+const foamerParts = 'part="seat assembly" and sewn=1 and finished=0';
+
 const responsibilities = {
 	'/seatCutters'	: {
-		'Date'			: 'select * from tasks where part="seat assembly" and cut=0 order by date asc;',
-		'Pattern'		: 'select * from tasks where part="seat assembly" and cut=0 order by pattern asc, date asc;',
-		'Material'		: 'select * from tasks where part="seat assembly" and cut=0 order by fabricOne asc, fabricTwo asc, date asc;',
-		'TrimMaterial'		: 'select * from tasks where part="seat assembly" and cut=0 order by fabricTwo asc, fabricOne asc, date asc;',
-		'DateDesc'		: 'select * from tasks where part="seat assembly" and cut=0 order by date desc;',
-		'PatternDesc'		: 'select * from tasks where part="seat assembly" and cut=0 order by pattern desc, date asc;',
-		'MaterialDesc'		: 'select * from tasks where part="seat assembly" and cut=0 order by fabricOne desc, fabricTwo asc, date asc;',
-		'TrimMaterialDesc'	: 'select * from tasks where part="seat assembly" and cut=0 order by fabricTwo desc, fabricOne asc, date asc;'
+		'Date'			: 'select * from tasks where '+seatCutterParts+' order by date asc;',
+		'Part'			: 'select * from tasks where '+seatCutterParts+' order by part asc, date asc;',
+		'Pattern'		: 'select * from tasks where '+seatCutterParts+' order by pattern asc, date asc;',
+		'Material'		: 'select * from tasks where '+seatCutterParts+' order by fabricOne asc, fabricTwo asc, date asc;',
+		'TrimMaterial'		: 'select * from tasks where '+seatCutterParts+' order by fabricTwo asc, fabricOne asc, date asc;',
+		'DateDesc'		: 'select * from tasks where '+seatCutterParts+' order by date desc;',
+		'PartDesc'		: 'select * from tasks where '+seatCutterParts+' order by part desc, date asc;',
+		'PatternDesc'		: 'select * from tasks where '+seatCutterParts+' order by pattern desc, date asc;',
+		'MaterialDesc'		: 'select * from tasks where '+seatCutterParts+' order by fabricOne desc, fabricTwo asc, date asc;',
+		'TrimMaterialDesc'	: 'select * from tasks where '+seatCutterParts+' order by fabricTwo desc, fabricOne asc, date asc;'
 	},
 	'/wallCutters'	: {
-		'Date'			: 'select * from tasks where part="wall assembly" or part="carpet" and cut=0 order by date asc;',
-		'Pattern'		: 'select * from tasks where part="wall assembly" or part="carpet" and cut=0 order by pattern asc, date asc;',
-		'Material'		: 'select * from tasks where part="wall assembly" or part="carpet" and cut=0 order by fabricOne asc, fabricTwo asc, date asc;',
-		'TrimMaterial'		: 'select * from tasks where part="wall assembly" or part="carpet" and cut=0 order by fabricTwo asc, fabricOne asc, date asc;',
-		'DateDesc'		: 'select * from tasks where part="wall assembly" or part="carpet" and cut=0 order by date desc;',
-		'PatternDesc'		: 'select * from tasks where part="wall assembly" or part="carpet" and cut=0 order by pattern desc, date asc;',
-		'MaterialDesc'		: 'select * from tasks where part="wall assembly" or part="carpet" and cut=0 order by fabricOne desc, fabricTwo asc, date asc;',
-		'TrimMaterialDesc'	: 'select * from tasks where part="wall assembly" or part="carpet" and cut=0 order by fabricTwo desc, fabricOne asc, date asc;'
+		'Date'			: 'select * from tasks where '+wallCutterParts+' order by date asc;',
+		'Part'			: 'select * from tasks where '+wallCutterParts+' order by part asc, date asc;',
+		'Pattern'		: 'select * from tasks where '+wallCutterParts+' order by pattern asc, date asc;',
+		'Material'		: 'select * from tasks where '+wallCutterParts+' order by fabricOne asc, fabricTwo asc, date asc;',
+		'TrimMaterial'		: 'select * from tasks where '+wallCutterParts+' order by fabricTwo asc, fabricOne asc, date asc;',
+		'DateDesc'		: 'select * from tasks where '+wallCutterParts+' order by date desc;',
+		'PartDesc'		: 'select * from tasks where '+wallCutterParts+' order by part desc, date asc;',
+		'PatternDesc'		: 'select * from tasks where '+wallCutterParts+' order by pattern desc, date asc;',
+		'MaterialDesc'		: 'select * from tasks where '+wallCutterParts+' order by fabricOne desc, fabricTwo asc, date asc;',
+		'TrimMaterialDesc'	: 'select * from tasks where '+wallCutterParts+' order by fabricTwo desc, fabricOne asc, date asc;'
 	},
 	'/seatSewers'	: {
-		'Date'			: 'select * from tasks where part="wind sock" or part="seat sling" or part="baggage compartment" or part="draft boot" or part="shock cord boot" or part="seat assembly" and cut=1 and sewn=0 order by date asc;',
-		'Pattern'		: 'select * from tasks where part="wind sock" or part="seat sling" or part="baggage compartment" or part="draft boot" or part="shock cord boot" or part="seat assembly" and cut=1 and sewn=0 order by pattern asc, date asc;',
-		'Material'		: 'select * from tasks where part="wind sock" or part="seat sling" or part="baggage compartment" or part="draft boot" or part="shock cord boot" or part="seat assembly" and cut=1 and sewn=0 order by fabricOne asc, fabricTwo asc, date asc;',
-		'TrimMaterial'		: 'select * from tasks where part="wind sock" or part="seat sling" or part="baggage compartment" or part="draft boot" or part="shock cord boot" or part="seat assembly" and cut=1 and sewn=0 order by fabricTwo asc, fabricOne asc, date asc;',
-		'DateDesc'		: 'select * from tasks where part="wind sock" or part="seat sling" or part="baggage compartment" or part="draft boot" or part="shock cord boot" or part="seat assembly" and cut=1 and sewn=0 order by date desc;',
-		'PatternDesc'		: 'select * from tasks where part="wind sock" or part="seat sling" or part="baggage compartment" or part="draft boot" or part="shock cord boot" or part="seat assembly" and cut=1 and sewn=0 order by pattern desc, date asc;',
-		'MaterialDesc'		: 'select * from tasks where part="wind sock" or part="seat sling" or part="baggage compartment" or part="draft boot" or part="shock cord boot" or part="seat assembly" and cut=1 and sewn=0 order by fabricOne desc, fabricTwo asc, date asc;',
-		'TrimMaterialDesc'	: 'select * from tasks where part="wind sock" or part="seat sling" or part="baggage compartment" or part="draft boot" or part="shock cord boot" or part="seat assembly" and cut=1 and sewn=0 order by fabricTwo desc, fabricOne asc, date asc;'
+		'Date'			: 'select * from tasks where '+seatSewerParts+' order by date asc;',
+		'Part'			: 'select * from tasks where '+seatSewerParts+' order by part asc, date asc;',
+		'Pattern'		: 'select * from tasks where '+seatSewerParts+' order by pattern asc, date asc;',
+		'Material'		: 'select * from tasks where '+seatSewerParts+' order by fabricOne asc, fabricTwo asc, date asc;',
+		'TrimMaterial'		: 'select * from tasks where '+seatSewerParts+' order by fabricTwo asc, fabricOne asc, date asc;',
+		'DateDesc'		: 'select * from tasks where '+seatSewerParts+' order by date desc;',
+		'PartDesc'		: 'select * from tasks where '+seatSewerParts+' order by part desc, date asc;',
+		'PatternDesc'		: 'select * from tasks where '+seatSewerParts+' order by pattern desc, date asc;',
+		'MaterialDesc'		: 'select * from tasks where '+seatSewerParts+' order by fabricOne desc, fabricTwo asc, date asc;',
+		'TrimMaterialDesc'	: 'select * from tasks where '+seatSewerParts+' order by fabricTwo desc, fabricOne asc, date asc;'
 	},
 	'/carpetSewers'	: {
-		'Date'			: 'select * from tasks where part="carpet" and cut=1 and sewn=0 order by date asc;',
-		'Pattern'		: 'select * from tasks where part="carpet" and cut=1 and sewn=0 order by pattern asc, date asc;',
-		'Material'		: 'select * from tasks where part="carpet" and cut=1 and sewn=0 order by fabricOne asc, fabricTwo asc, date asc;',
-		'TrimMaterial'		: 'select * from tasks where part="carpet" and cut=1 and sewn=0 order by fabricTwo asc, fabricOne asc, date asc;',
-		'DateDesc'		: 'select * from tasks where part="carpet" and cut=1 and sewn=0 order by date desc;',
-		'PatternDesc'		: 'select * from tasks where part="carpet" and cut=1 and sewn=0 order by pattern desc, date asc;',
-		'MaterialDesc'		: 'select * from tasks where part="carpet" and cut=1 and sewn=0 order by fabricOne desc, fabricTwo asc, date asc;',
-		'TrimMaterialDesc'	: 'select * from tasks where part="carpet" and cut=1 and sewn=0 order by fabricTwo desc, fabricOne asc, date asc;'
+		'Date'			: 'select * from tasks where '+carpetSewerParts+' order by date asc;',
+		'Part'			: 'select * from tasks where '+carpetSewerParts+' order by part asc, date asc;',
+		'Pattern'		: 'select * from tasks where '+carpetSewerParts+' order by pattern asc, date asc;',
+		'Material'		: 'select * from tasks where '+carpetSewerParts+' order by fabricOne asc, fabricTwo asc, date asc;',
+		'TrimMaterial'		: 'select * from tasks where '+carpetSewerParts+' order by fabricTwo asc, fabricOne asc, date asc;',
+		'DateDesc'		: 'select * from tasks where '+carpetSewerParts+' order by date desc;',
+		'PartDesc'		: 'select * from tasks where '+carpetSewerParts+' order by part desc, date asc;',
+		'PatternDesc'		: 'select * from tasks where '+carpetSewerParts+' order by pattern desc, date asc;',
+		'MaterialDesc'		: 'select * from tasks where '+carpetSewerParts+' order by fabricOne desc, fabricTwo asc, date asc;',
+		'TrimMaterialDesc'	: 'select * from tasks where '+carpetSewerParts+' order by fabricTwo desc, fabricOne asc, date asc;'
 	},
 	'/miscCutters'	: {
-		'Date'			: 'select * from tasks where part="wind sock" or part="seat sling" or part="baggage compartment" or part="draft boot" or part="shock cord boot" or part="headliner" and cut=0 order by date asc;',
-		'Pattern'		: 'select * from tasks where part="wind sock" or part="seat sling" or part="baggage compartment" or part="draft boot" or part="shock cord boot" or part="headliner" and cut=0 order by pattern asc, date asc;',
-		'Material'		: 'select * from tasks where part="wind sock" or part="seat sling" or part="baggage compartment" or part="draft boot" or part="shock cord boot" or part="headliner" and cut=0 order by fabricOne asc, fabricTwo asc, date asc;',
-		'TrimMaterial'		: 'select * from tasks where part="wind sock" or part="seat sling" or part="baggage compartment" or part="draft boot" or part="shock cord boot" or part="headliner" and cut=0 order by fabricTwo asc, fabricOne asc, date asc;',
-		'DateDesc'		: 'select * from tasks where part="wind sock" or part="seat sling" or part="baggage compartment" or part="draft boot" or part="shock cord boot" or part="headliner" and cut=0 order by date desc;',
-		'PatternDesc'		: 'select * from tasks where part="wind sock" or part="seat sling" or part="baggage compartment" or part="draft boot" or part="shock cord boot" or part="headliner" and cut=0 order by pattern desc, date asc;',
-		'MaterialDesc'		: 'select * from tasks where part="wind sock" or part="seat sling" or part="baggage compartment" or part="draft boot" or part="shock cord boot" or part="headliner" and cut=0 order by fabricOne desc, fabricTwo asc, date asc;',
-		'TrimMaterialDesc'	: 'select * from tasks where part="wind sock" or part="seat sling" or part="baggage compartment" or part="draft boot" or part="shock cord boot" or part="headliner" and cut=0 order by fabricTwo desc, fabricOne asc, date asc;'
+		'Date'			: 'select * from tasks where '+miscCutterParts+' order by date asc;',
+		'Part'			: 'select * from tasks where '+miscCutterParts+' order by part asc, date asc;',
+		'Pattern'		: 'select * from tasks where '+miscCutterParts+' order by pattern asc, date asc;',
+		'Material'		: 'select * from tasks where '+miscCutterParts+' order by fabricOne asc, fabricTwo asc, date asc;',
+		'TrimMaterial'		: 'select * from tasks where '+miscCutterParts+' order by fabricTwo asc, fabricOne asc, date asc;',
+		'DateDesc'		: 'select * from tasks where '+miscCutterParts+' order by date desc;',
+		'PartDesc'		: 'select * from tasks where '+miscCutterParts+' order by part desc, date asc;',
+		'PatternDesc'		: 'select * from tasks where '+miscCutterParts+' order by pattern desc, date asc;',
+		'MaterialDesc'		: 'select * from tasks where '+miscCutterParts+' order by fabricOne desc, fabricTwo asc, date asc;',
+		'TrimMaterialDesc'	: 'select * from tasks where '+miscCutterParts+' order by fabricTwo desc, fabricOne asc, date asc;'
 	},
-	//these queries are stand-ins and just return seat sewers
 	'/gluers'	:{
-		'Date'			: 'select * from tasks where part="carpet" and cut=1 and sewn=1 order by date asc;',
-		'Pattern'		: 'select * from tasks where part="carpet" and cut=1 and sewn=1 order by pattern asc, date asc;',
-		'Material'		: 'select * from tasks where part="carpet" and cut=1 and sewn=1 order by fabricOne asc, fabricTwo asc, date asc;',
-		'TrimMaterial'		: 'select * from tasks where part="carpet" and cut=1 and sewn=1 order by fabricTwo asc, fabricOne asc, date asc;',
-		'DateDesc'		: 'select * from tasks where part="carpet" and cut=1 and sewn=1 order by date desc;',
-		'PatternDesc'		: 'select * from tasks where part="carpet" and cut=1 and sewn=1 order by pattern desc, date asc;',
-		'MaterialDesc'		: 'select * from tasks where part="carpet" and cut=1 and sewn=1 order by fabricOne desc, fabricTwo asc, date asc;',
-		'TrimMaterialDesc'	: 'select * from tasks where part="carpet" and cut=1 and sewn=1 order by fabricTwo desc, fabricOne asc, date asc;'
+		'Date'			: 'select * from tasks where '+gluerParts+' order by date asc;',
+		'Part'			: 'select * from tasks where '+gluerParts+' order by part asc, date asc;',
+		'Pattern'		: 'select * from tasks where '+gluerParts+' order by pattern asc, date asc;',
+		'Material'		: 'select * from tasks where '+gluerParts+' order by fabricOne asc, fabricTwo asc, date asc;',
+		'TrimMaterial'		: 'select * from tasks where '+gluerParts+' order by fabricTwo asc, fabricOne asc, date asc;',
+		'DateDesc'		: 'select * from tasks where '+gluerParts+' order by date desc;',
+		'PartDesc'		: 'select * from tasks where '+gluerParts+' order by part desc, date asc;',
+		'PatternDesc'		: 'select * from tasks where '+gluerParts+' order by pattern desc, date asc;',
+		'MaterialDesc'		: 'select * from tasks where '+gluerParts+' order by fabricOne desc, fabricTwo asc, date asc;',
+		'TrimMaterialDesc'	: 'select * from tasks where '+gluerParts+' order by fabricTwo desc, fabricOne asc, date asc;'
 	},
 	'/foamers'	: { 
-		'Date'			: 'select * from tasks where part="seat assembly" and sewn=1 and finished=0 order by date asc;',
-		'Pattern'		: 'select * from tasks where part="seat assembly" and sewn=1 and finished=0 order by pattern asc, date asc;',
-		'Material'		: 'select * from tasks where part="seat assembly" and sewn=1 and finished=0 order by fabricOne asc, fabricTwo asc, date asc;',
-		'TrimMaterial'		: 'select * from tasks where part="seat assembly" and sewn=1 and finished=0 order by fabricTwo asc, fabricOne asc, date asc;',
-		'DateDesc'		: 'select * from tasks where part="seat assembly" and sewn=1 and finished=0 order by date desc;',
-		'PatternDesc'		: 'select * from tasks where part="seat assembly" and sewn=1 and finished=0 order by pattern desc, date asc;',
-		'MaterialDesc'		: 'select * from tasks where part="seat assembly" and sewn=1 and finished=0 order by fabricOne desc, fabricTwo asc, date asc;',
-		'TrimMaterialDesc'	: 'select * from tasks where part="seat assembly" and sewn=1 and finished=0 order by fabricTwo desc, fabricOne asc, date asc;'
+		'Date'			: 'select * from tasks where '+foamerParts+' order by date asc;',
+		'Part'			: 'select * from tasks where '+foamerParts+' order by part asc, date asc;',
+		'Pattern'		: 'select * from tasks where '+foamerParts+' order by pattern asc, date asc;',
+		'Material'		: 'select * from tasks where '+foamerParts+' order by fabricOne asc, fabricTwo asc, date asc;',
+		'TrimMaterial'		: 'select * from tasks where '+foamerParts+' order by fabricTwo asc, fabricOne asc, date asc;',
+		'DateDesc'		: 'select * from tasks where '+foamerParts+' order by date desc;',
+		'PartDesc'		: 'select * from tasks where '+foamerParts+' order by part desc, date asc;',
+		'PatternDesc'		: 'select * from tasks where '+foamerParts+' order by pattern desc, date asc;',
+		'MaterialDesc'		: 'select * from tasks where '+foamerParts+' order by fabricOne desc, fabricTwo asc, date asc;',
+		'TrimMaterialDesc'	: 'select * from tasks where '+foamerParts+' order by fabricTwo desc, fabricOne asc, date asc;'
 	}
 };
 
 //text used to build the header of HTTP message
-var mime = {
+const mime = {
 	html: 'text/html',
 	txt: 'text/plain',
 	css: 'text/css',
@@ -103,7 +124,8 @@ var mime = {
 http.createServer(function (req,res){
 	var q = url.parse(req.url, true);
 	var filename = q.pathname == '/' ? '/var/www/html/index.html' : '/var/www/html' + q.pathname; 
-
+	
+	//allOrders page
 	if(q.pathname =='/allOrders'){
 		fs.readFile('/var/www/html/shell',(err,data) => {
 			if(err)	console.log(err);
@@ -137,7 +159,7 @@ http.createServer(function (req,res){
 			});
 		});
 	}
-
+	//task table pages
 	else if(q.query.sortBy != undefined){
 		fs.readFile('/var/www/html/shell',(err,data) => {
 			if(err)	console.log(err);
@@ -147,7 +169,8 @@ http.createServer(function (req,res){
 					(err3,result) => {
 					if(err3) console.log(err3);
 
-					var outputHTML = '<table class="taskTable"><tr><th class="redClickable">Part</th>'+
+					var outputHTML = '<table class="taskTable"><tr><th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy='+
+							(q.query.sortBy=='Part'?'PartDesc':'Part')+'\'">Part</th>'+
 						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy='+
 							(q.query.sortBy=='Date'?'DateDesc':'Date')+'\'">Date</th>'+
 						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy='+
@@ -175,7 +198,7 @@ http.createServer(function (req,res){
 			});
 		});
 	}
-			
+	//taskView page		
 	else if(q.query.taskId != undefined){
 		if(q.query.action=="lock"){
 
@@ -199,11 +222,14 @@ http.createServer(function (req,res){
 					//write error page here
 				}
 				var update = '';
-				if(result[0].cut==0) update='cut';
-				else if(result[0].sewn==0) update='sewn';
-				else  update='finished';
+				if(result[0].part == "Headliner") update ='cut=1, sewn=1, finished=1';
+				else if(result[0].cut==0) update='cut=1';
+				else if(result[0].part in {'Wind Sock':'','Seat Sling':'','Baggage Compartment':'','Draft Boot':'','Shock Cord Boot':'','wall panel':'','firewall':''}) 
+					update ='sewn=1,finished=1';
+				else if( result[0].sewn==0) update='sewn=1';
+				else  update='finished=1';
 
-				activeDB.query('update tasks set '+update+'=1 where taskId='+q.query.taskId,(err,result) =>{
+				activeDB.query('update tasks set '+update+' where taskId='+q.query.taskId,(err,result) =>{
 
 				});
 			});
@@ -238,9 +264,11 @@ http.createServer(function (req,res){
 			});
 		}
 	}
+
+	//addOrders page
 	else if(q.query.pattern != undefined){
 		activeDB.query('insert into tasks(pattern,fabricOne,fabricTwo,part,date) values ("'+
-			q.query.pattern+'","'+q.query.fabricOne+'","'+q.query.fabricTwo+'","'+q.query.part+'",curdate());',
+			q.query.pattern+'","'+q.query.fabricOne+'","'+q.query.fabricTwo+'","'+q.query.part+'",localtime());',
 			(err,result) => {
 			if(err)console.log(err);
 		});
@@ -256,6 +284,7 @@ http.createServer(function (req,res){
 			res.end();
 		});
 	}
+	//serve file in html folder or 404 page
 	else{
 		fs.readFile(filename,(err,data) => {
 			if(err) {
