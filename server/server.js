@@ -127,19 +127,25 @@ http.createServer(function (req,res){
 	
 	//allOrders page
 	if(q.pathname =='/allOrders'){
+
+		//read begining and end of html template
 		fs.readFile('/var/www/html/shell',(err,data) => {
 			if(err)	console.log(err);
 
 			fs.readFile('/var/www/html/shellend',(err,data2) =>{
-				activeDB.query('select * from orders',
-					(err3,result) => {
+				//query all orders
+				activeDB.query('select * from orders',(err3,result) => {
 
 					if(err3) console.log(err3);
+					
+					//table headers
 					var outputHTML = '<table class="taskTable"><tr><th class="redClickable">Order ID</th>'+
 						'<th class="redClickable">Date Ordered</th>'+
 						'<th class="redClickable">First Name</th>'+
 						'<th class="redClickable">Last Name</th>'+
 						'<th class="redClickable">Installation</th></tr>';
+					
+					//add table row for each order record
 					result.forEach((item) => {
 						outputHTML += '<tr class="redClickable" onclick="window.location=\'/\';"><td>'+
 							item.orderId+
@@ -150,6 +156,8 @@ http.createServer(function (req,res){
 							'</td></tr>';
 					});
 					outputHTML += '</table>';
+
+					//serve html template with table in the midddle
 					res.writeHead(200, '{"Content-Type": "text/html"}');
 					res.write(data+
 						outputHTML+
@@ -159,49 +167,13 @@ http.createServer(function (req,res){
 			});
 		});
 	}
-	//task table pages
-	else if(q.query.sortBy != undefined){
-		fs.readFile('/var/www/html/shell',(err,data) => {
-			if(err)	console.log(err);
-
-			fs.readFile('/var/www/html/shellend',(err,data2) =>{
-				activeDB.query(responsibilities[q.pathname][q.query.sortBy],
-					(err3,result) => {
-					if(err3) console.log(err3);
-
-					var outputHTML = '<table class="taskTable"><tr><th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy='+
-							(q.query.sortBy=='Part'?'PartDesc':'Part')+'\'">Part</th>'+
-						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy='+
-							(q.query.sortBy=='Date'?'DateDesc':'Date')+'\'">Date</th>'+
-						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy='+
-							(q.query.sortBy=='Pattern'?'PatternDesc':'Pattern')+'\'">Pattern</th>'+
-						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy='+
-							(q.query.sortBy=='Material'?'MaterialDesc':'Material')+'\'">Primary Material</th>'+
-						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy='+
-							(q.query.sortBy=='TrimMaterial'?'TrimMaterialDesc':'TrimMaterial')+'\'">Trim Material</th></tr>';
-					result.forEach((item) => {
-						outputHTML += '<tr class="taskRow" onclick="window.location=\'/taskView?taskId='+item.taskId+'\';"><td>'+
-							item.part+
-							'</td><td>'+(item.date.getMonth()+1)+'/'+item.date.getDate()+
-							'</td><td>'+item.pattern+
-							'</td><td>'+item.fabricOne+
-							'</td><td>'+item.fabricTwo+
-							'</td></tr>';
-					});
-					outputHTML += '</table>';
-					res.writeHead(200, '{"Content-Type": "text/html","Cache-Control": "no-store", "must-revalidate", "max-age=0"}');
-					res.write(data +
-						outputHTML+
-						data2);
-					res.end();
-				});
-			});
-		});
-	}
 	//taskView page		
-	else if(q.query.taskId != undefined){
-		if(q.query.action=="lock"){
+	else if(q.pathname == '/taskView'){
 
+		//if user pressed lock button
+		if(q.query.action=="lock"){
+			
+			//update locked column
 			activeDB.query('update tasks set locked=1 where taskId='+q.query.taskId,(err,result) =>{
 				if(err) {
 					console.log(err);
@@ -209,36 +181,49 @@ http.createServer(function (req,res){
 				}
 			});
 			
+			//serve page with redirect back to original task
 			res.writeHead(200,'{"Content-Type": "text/html"}');
 			res.write('<html><head><link rel="stylesheet" type="text/css" href="index.css"/></head>'+
 				'<body onload="window.history.back()"><div class="redirecting">redirecting</div></body></html>');
 			res.end();
 		}
+
+		//if user pressed complete button
 		else if(q.query.action=="complete"){
 			
+			//select task to perform logic
 			activeDB.query('select * from tasks where taskId='+q.query.taskId,(err,result) =>{
 				if(err) {
 					console.log(err);
 					//write error page here
 				}
 				var update = '';
+				//headliners are only ever cut so always set all bools to true 
 				if(result[0].part == "Headliner") update ='cut=1, sewn=1, finished=1';
+				//everything else needs to be cut and sent to the next station
 				else if(result[0].cut==0) update='cut=1';
+				//each of these items are only either cut and finished or cut and sewn so set everything to true on the second completion (after being cut)
 				else if(result[0].part in {'Wind Sock':'','Seat Sling':'','Baggage Compartment':'','Draft Boot':'','Shock Cord Boot':'','wall panel':'','firewall':''}) 
 					update ='sewn=1,finished=1';
+				//set sewn to true for everything else that has already been cut
 				else if( result[0].sewn==0) update='sewn=1';
+				//if it's already been cut and sewn set to finished
 				else  update='finished=1';
-
-				activeDB.query('update tasks set '+update+' where taskId='+q.query.taskId,(err,result) =>{
+				
+				//perform the mysql update decided on above
+				activeDB.query('update tasks set '+update+',locked=0 where taskId='+q.query.taskId,(err,result) =>{
 
 				});
 			});
 
+			//serve page that redirects back to task table
 			res.writeHead(200,'{"Content-Type": "text/html"}');
 			res.write('<html><head><link rel="stylesheet" type="text/css" href="index.css"/></head>'+
 				'<body onload="window.history.go(-2)"><div class="redirecting">redirecting</div></body></html>');
 			res.end();
 		}
+		
+		//if no button has been pressed just show the task info
 		else{
 			fs.readFile('/var/www/html/shell',(err,data) => {
 				if(err)	console.log(err);
@@ -265,8 +250,10 @@ http.createServer(function (req,res){
 		}
 	}
 
-	//addOrders page
-	else if(q.query.pattern != undefined){
+	//addOrder page
+	else if(q.pathname == '/addOrder'){
+		//if the submit button was pressed add a task record
+		//just a preliminary implementation
 		activeDB.query('insert into tasks(pattern,fabricOne,fabricTwo,part,date) values ("'+
 			q.query.pattern+'","'+q.query.fabricOne+'","'+q.query.fabricTwo+'","'+q.query.part+'",localtime());',
 			(err,result) => {
@@ -284,15 +271,73 @@ http.createServer(function (req,res){
 			res.end();
 		});
 	}
+
+	//task table pages
+	else if(q.query.sortBy != undefined){
+		
+		//if the path has a sortBy in the query string but not a valid pathname serve 404
+		if(responsibilities[q.pathname]==undefined){
+			res.writeHead(404, '{"Content-Type": "text/html"}');
+			res.write("<h1>404 not found</h1>");
+			res.end();
+			return;
+		}
+		
+		//read begining and end of the html template
+		fs.readFile('/var/www/html/shell',(err,data) => {
+			if(err)	console.log(err);
+
+			fs.readFile('/var/www/html/shellend',(err,data2) =>{
+				activeDB.query(responsibilities[q.pathname][q.query.sortBy],
+					(err3,result) => {
+					if(err3)console.log(err3);
+
+					//headers for the task table
+					var outputHTML = '<table class="taskTable"><tr><th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy='+
+							(q.query.sortBy=='Part'?'PartDesc':'Part')+'\'">Part</th>'+
+						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy='+
+							(q.query.sortBy=='Date'?'DateDesc':'Date')+'\'">Date</th>'+
+						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy='+
+							(q.query.sortBy=='Pattern'?'PatternDesc':'Pattern')+'\'">Pattern</th>'+
+						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy='+
+							(q.query.sortBy=='Material'?'MaterialDesc':'Material')+'\'">Primary Material</th>'+
+						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy='+
+							(q.query.sortBy=='TrimMaterial'?'TrimMaterialDesc':'TrimMaterial')+'\'">Trim Material</th></tr>';
+					
+					//add table row for each reccord returned by sql query
+					result.forEach((item) => {
+						outputHTML += '<tr class="taskRow" onclick="window.location=\'/taskView?taskId='+item.taskId+'\';"><td>'+
+							item.part+
+							'</td><td>'+(item.date.getMonth()+1)+'/'+item.date.getDate()+
+							'</td><td>'+item.pattern+
+							'</td><td>'+item.fabricOne+
+							'</td><td>'+item.fabricTwo+
+							'</td></tr>';
+					});
+					outputHTML += '</table>';
+
+					//serve table in the middle of the html template
+					res.writeHead(200, '{"Content-Type": "text/html","Cache-Control": "no-store", "must-revalidate", "max-age=0"}');
+					res.write(data +
+						outputHTML+
+						data2);
+					res.end();
+				});
+			});
+		});
+	}
 	//serve file in html folder or 404 page
 	else{
 		fs.readFile(filename,(err,data) => {
+			//if the file doesn't exist serve 404 page
 			if(err) {
 				res.writeHead(404, '{"Content-Type": "text/html"}');
 				res.write("<h1>404 not found</h1>");
 				res.end();
 				return;
 			}
+
+			//serve whatever file was requested by url
 			res.writeHead(200, '{"Content-Type": "'+mime[q.pathname.split('.')[q.pathname.split('.').length-1]]+'"}');
 			res.write(data);
 			res.end();
