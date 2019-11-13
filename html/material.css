@@ -1,0 +1,101 @@
+:root{
+	--primary-color: 		#b9333c;
+	--primary-color-dark:		#a92b32;
+	--primary-color-light: 		#e8494d;
+	--secondary-color: 		#d8d8b0;
+	--secondary-color-light:	#ffffcc;
+	--main-background-color:	#282828;
+	--shadow-color:			#303030;
+}
+*{
+	overflow: 			none;
+	font-size:			1.2vw;
+	font-family: 			Roboto, Charcoal, sans-serif;
+	color: 				white;
+}
+
+html{
+	padding: 			0 0 0 0;
+	margin: 			0 0 0 0;
+	height: 			100%;
+	background-color:		var(--main-background-color);
+}
+body{
+	padding: 			0 0 0 0;
+	margin: 			0 0 0 0;
+}
+
+
+//General Classes
+.curvedCorners{
+	border-radius: 			5px 5px 5px 5px;
+}
+.standardPadding{
+	padding: 			10px 10px 10px 10px;
+}
+.tasksContainer{
+	margin: 			1vh 2vw 0 10vw;
+	border: 			1px solid black;
+}
+
+.stationButtonContainer{
+	position: 			fixed;
+	width: 				8vw;
+	height:				100%;
+	padding: 			1vh .2vw 0 .5vw;
+	background-color:		var(--primary-color);
+	box-shadow:			.5vw 0vw .5vw var(--shadow-color);
+}
+.stationButton{
+	margin:				2vh .2vw 2vh .2vw;
+	height:				7vh;
+	border-radius:			.2;
+	border-radius: 			2vh 2vh 2vh 2vh;
+	text-align:			center;
+	font-size:			3vh;
+	background-color:		var(--secondary-color);
+	box-shadow:			0 0 .5vw var(--shadow-color);
+	color:				var(--main-background-color);
+
+}
+.clickable:hover{
+	background-color: 		var(--primary-color-light);
+	cursor: 			pointer;
+	color:				var(--main-background-color);
+}
+.stationButton:hover{
+	background-color: 		var(--secondary-color-light);
+}
+.taskTable{
+	outline-width:			0;
+	text-align:			left;
+	text-transform: 		capitalize;
+	width:				100%
+}
+.taskTable td{
+	width: 				15vw;
+	padding: 			.5vh .5vw .5vh .5vw;
+
+}
+.taskTable tr:first-child{
+	background-color:		var(--primary-color);
+	text-align:			center;
+	height:				5vh;
+}
+.taskTable tr:hover:not(:first-child){
+	cursor:				pointer;
+	background-color:		var(--secondary-color);
+	color:				var(--main-background-color);
+}
+.taskTable tr:nth-child(even){
+	
+}
+.taskTable tr:nth-child(odd):not(:first-child):hover{
+}
+.taskTable tr:nth-child(even):hover{
+}
+.redirecting{
+	text-align: 			center;
+	font-size: 			2em;
+	margin-top: 			20vh;
+}

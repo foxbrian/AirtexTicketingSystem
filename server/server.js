@@ -139,15 +139,15 @@ http.createServer(function (req,res){
 					if(err3) console.log(err3);
 					
 					//table headers
-					var outputHTML = '<table class="taskTable"><tr><th class="redClickable">Order ID</th>'+
-						'<th class="redClickable">Date Ordered</th>'+
-						'<th class="redClickable">First Name</th>'+
-						'<th class="redClickable">Last Name</th>'+
-						'<th class="redClickable">Installation</th></tr>';
+					var outputHTML = '<table class="taskTable"><tr><th class="clickable">Order ID</th>'+
+						'<th class="clickable">Date Ordered</th>'+
+						'<th class="clickable">First Name</th>'+
+						'<th class="clickable">Last Name</th>'+
+						'<th class="clickable">Installation</th></tr>';
 					
 					//add table row for each order record
 					result.forEach((item) => {
-						outputHTML += '<tr class="redClickable" onclick="window.location=\'/\';"><td>'+
+						outputHTML += '<tr class="clickable" onclick="window.location=\'/\';"><td>'+
 							item.orderId+
 							'</td><td>'+'to be implemented'+//(item.date.getMonth()+1)+'/'+item.date.getDate()+
 							'</td><td>'+item.firstName+
@@ -293,15 +293,15 @@ http.createServer(function (req,res){
 					if(err3)console.log(err3);
 
 					//headers for the task table
-					var outputHTML = '<table class="taskTable"><tr><th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy='+
+					var outputHTML = '<table class="taskTable"><tr><th class="clickable" onclick="window.location=\''+q.pathname+'?sortBy='+
 							(q.query.sortBy=='Part'?'PartDesc':'Part')+'\'">Part</th>'+
-						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy='+
+						'<th class="clickable" onclick="window.location=\''+q.pathname+'?sortBy='+
 							(q.query.sortBy=='Date'?'DateDesc':'Date')+'\'">Date</th>'+
-						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy='+
+						'<th class="clickable" onclick="window.location=\''+q.pathname+'?sortBy='+
 							(q.query.sortBy=='Pattern'?'PatternDesc':'Pattern')+'\'">Pattern</th>'+
-						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy='+
+						'<th class="clickable" onclick="window.location=\''+q.pathname+'?sortBy='+
 							(q.query.sortBy=='Material'?'MaterialDesc':'Material')+'\'">Primary Material</th>'+
-						'<th class="redClickable" onclick="window.location=\''+q.pathname+'?sortBy='+
+						'<th class="clickable" onclick="window.location=\''+q.pathname+'?sortBy='+
 							(q.query.sortBy=='TrimMaterial'?'TrimMaterialDesc':'TrimMaterial')+'\'">Trim Material</th></tr>';
 					
 					//add table row for each reccord returned by sql query

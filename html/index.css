@@ -62,6 +62,7 @@ body{
 .taskTable{
 	text-align:left;
 	text-transform: capitalize;
+	width:80vw;
 }
 
 

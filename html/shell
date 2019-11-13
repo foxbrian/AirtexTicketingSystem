@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<link rel="stylesheet" type="text/css" href="index.css"/>
+		<link rel="stylesheet" type="text/css" href="material.css"/>
 		<script>
 			if (!!window.performance && window.performance.navigation.type === 2) {
             			console.log('Reloading');
@@ -24,14 +24,14 @@
 		</div>
 
 		<div class="stationButtonContainer">
-			<div onclick="window.location='/seatCutters?sortBy=Date'" class="stationButton redClickable">Seat Cutters</div>
-			<div onclick="window.location='/seatSewers?sortBy=Date'" class="stationButton redClickable">Seat Sewers</div>
-			<div onclick="window.location='/wallCutters?sortBy=Date'" class="stationButton redClickable">Wall Cutters</div>
-			<div onclick="window.location='/carpetSewers?sortBy=Date'" class="stationButton redClickable">Carpet Sewers</div>
-			<div onclick="window.location='/miscCutters?sortBy=Date'" class="stationButton redClickable">Misc Cutters</div>
-			<div onclick="window.location='/foamers?sortBy=Date'" class="stationButton redClickable">Foamers</div>
-			<div onclick="window.location='/gluers?sortBy=Date'" class="stationButton redClickable">Gluers</div>
-			<div onclick="window.location='/allOrders'" class="stationButton redClickable">All Orders</div>
+			<div onclick="window.location='/seatCutters?sortBy=Date'" class="stationButton clickable">Seat Cutters</div>
+			<div onclick="window.location='/seatSewers?sortBy=Date'" class="stationButton clickable">Seat Sewers</div>
+			<div onclick="window.location='/wallCutters?sortBy=Date'" class="stationButton clickable">Wall Cutters</div>
+			<div onclick="window.location='/carpetSewers?sortBy=Date'" class="stationButton clickable">Carpet Sewers</div>
+			<div onclick="window.location='/miscCutters?sortBy=Date'" class="stationButton clickable">Misc Cutters</div>
+			<div onclick="window.location='/foamers?sortBy=Date'" class="stationButton clickable">Foamers</div>
+			<div onclick="window.location='/gluers?sortBy=Date'" class="stationButton clickable">Gluers</div>
+			<div onclick="window.location='/allOrders'" class="stationButton clickable">All Orders</div>
 		</div>	
 
 		<div class="tasksContainer">
