@@ -14,11 +14,11 @@ var activeDB = mysql.createPool({
 
 //SQL queries for each filter and sort combination
 const seatCutterParts = 'part="seat assembly" and cut=0';
-const wallCutterParts = '(part="wall panel" or part="carpet") and cut=0';
+const wallCutterParts = '(part="wall panel" or part="carpet" or part="firewall cover") and cut=0';
 const seatSewerParts = '(part="wind sock" or part="seat sling" or part="baggage compartment" or part="draft boot" or part="shock cord boot" or part="seat assembly") and cut=1 and sewn=0';
 const carpetSewerParts = 'part="carpet" and cut=1 and sewn=0';
 const miscCutterParts = '(part="wind sock" or part="seat sling" or part="baggage compartment" or part="draft boot" or part="shock cord boot" or part="headliner") and cut=0';
-const gluerParts= '(part="carpet" and sewn=1 and finished = 0) or ((part="wall panel" or part="firewall") and cut=1 and finished=0)';
+const gluerParts= '(part="carpet" and sewn=1 and finished = 0) or ((part="wall panel" or part="firewall cover") and cut=1 and finished=0)';
 const foamerParts = 'part="seat assembly" and sewn=1 and finished=0';
 
 const responsibilities = {
@@ -183,7 +183,7 @@ http.createServer(function (req,res){
 			
 			//serve page with redirect back to original task
 			res.writeHead(200,'{"Content-Type": "text/html"}');
-			res.write('<html><head><link rel="stylesheet" type="text/css" href="index.css"/></head>'+
+			res.write('<html><head><link rel="stylesheet" type="text/css" href="material.css"/></head>'+
 				'<body onload="window.history.back()"><div class="redirecting">redirecting</div></body></html>');
 			res.end();
 		}
@@ -203,7 +203,7 @@ http.createServer(function (req,res){
 				//everything else needs to be cut and sent to the next station
 				else if(result[0].cut==0) update='cut=1';
 				//each of these items are only either cut and finished or cut and sewn so set everything to true on the second completion (after being cut)
-				else if(result[0].part in {'Wind Sock':'','Seat Sling':'','Baggage Compartment':'','Draft Boot':'','Shock Cord Boot':'','wall panel':'','firewall':''}) 
+				else if(result[0].part in {'Wind Sock':'','Seat Sling':'','Baggage Compartment':'','Draft Boot':'','Shock Cord Boot':'','Wall Panel':'','Firewall Cover':''}) 
 					update ='sewn=1,finished=1';
 				//set sewn to true for everything else that has already been cut
 				else if( result[0].sewn==0) update='sewn=1';
@@ -218,7 +218,7 @@ http.createServer(function (req,res){
 
 			//serve page that redirects back to task table
 			res.writeHead(200,'{"Content-Type": "text/html"}');
-			res.write('<html><head><link rel="stylesheet" type="text/css" href="index.css"/></head>'+
+			res.write('<html><head><link rel="stylesheet" type="text/css" href="material.css"/></head>'+
 				'<body onload="window.history.go(-2)"><div class="redirecting">redirecting</div></body></html>');
 			res.end();
 		}
