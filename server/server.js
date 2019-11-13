@@ -230,11 +230,11 @@ http.createServer(function (req,res){
 
 				fs.readFile('/var/www/html/shellend',(err,data2) =>{
 					activeDB.query('select * from tasks where taskId='+q.query.taskId,(err3,result) =>{
-						var outputHTML = '<div class="taskElements"><table><tr><td>Order ID</td><td>'+result[0].orderId+
-						'<tr><td>Pattern</td><td>'+result[0].pattern+
-						'</td></tr><tr><td>Primary Material</td><td>'+result[0].fabricOne+
-						'</td></tr><tr><td>Trim Material</td><td>'+result[0].fabricTwo+
-						'</td></tr><tr><td>Date Ordered</td><td>'+(result[0].date.getMonth()+1)+'/'+result[0].date.getDate()+
+						var outputHTML = '<div class="taskElements"><table><tr><td>Order ID</td><td>Pattern</td>><td>Primary Material</td><td>Trim Material</td><td>Date Ordered</td><td>'+result[0].orderId+
+						'<tr<td>'+result[0].pattern+
+						'</td></tr><tr><td>'+result[0].fabricOne+
+						'</td></tr><tr><td>'+result[0].fabricTwo+
+						'</td></tr><tr><td>'+(result[0].date.getMonth()+1)+'/'+result[0].date.getDate()+
 						'</td></tr></table></div>';
 						
 						outputHTML +='<button onclick="window.location=\'/taskView?taskId='+q.query.taskId+'&action=lock\'">Lock</button>'+
