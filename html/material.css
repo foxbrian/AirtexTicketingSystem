@@ -17,6 +17,27 @@ body, html{
 	margin: 			0 0 0 0;
 	background-color:		var(--main-background-color);
 }
+.banner{
+	font-size:			0px;
+	width:				98vw;
+	padding:			0 0 0 1vw;
+	margin: 			10px 0 10px 0;
+}
+.title, .searchContainer{
+	display:			inline-block;
+	width:				50%;	
+}
+.searchContainer{
+	text-align:			right;
+}
+.searchButton, .search{
+	color:				var(--primary-color);
+}
+.title{
+	font-size:			3vw;
+	text-align:			left;
+}
+
 .stationButtonContainer{
 	font-size:			0px;/*DONT REMOVE THIS PROPERTY*/
 	background-color:		var(--primary-color);
@@ -35,24 +56,22 @@ body, html{
 	background-color: 		var(--secondary-color-light);
 }
 .tasksContainer{
-	margin: 			1vh 0 0 2.25vw;
+	margin: 			1vh 0 0 2.5vw;
+	width:				95vw;
 }
-.taskTable{
+.taskTable, .taskElements{
 	text-align:			left;
 	text-transform: 		capitalize;
 	border-spacing:			0;
 	border-collapse: 		collapse;
+	width:				100%;
 }
-.taskTable td, .taskTable th{
-	width:				19vw;
-
-}
-.taskTable tr:first-child{
+.taskTable tr:first-child, .taskElements tr:firstchild{
 	background-color:		var(--primary-color);
 	text-align:			left;
 	height:				5vh;
 }
-.taskTable td:not(:first-child), .taskTable th:not(:first-child){
+.taskTable td:not(:first-child), .taskTable th:not(:first-child), .taskElements td:not(:first-child), .taskElement th:not(first-child){
 	text-align: right;
 }
 .taskTable tr:hover:not(:first-child){
@@ -60,8 +79,8 @@ body, html{
 	background-color:		var(--secondary-color);
 	color:				var(--main-background-color);
 }
-.taskTable tr:not(:first-child){
-	border-top:				2px solid var(--secondary-color);
+.taskTable tr:not(:first-child), .taskElements tr:not(:first-child){
+	border-bottom:			3px solid var(--secondary-color);
 }
 .clickable:hover{
 	background-color: 		var(--primary-color-light);

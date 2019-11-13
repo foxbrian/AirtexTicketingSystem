@@ -17,10 +17,15 @@
 
 	<body>
 		<div class="banner">
-			<form action='searchOrders' method='get'>
-				<input class="search" type='text' value=''>
-				<input class="searchButton" type='submit' value="Search">
-			</form>
+			<div class = "title">
+				Airtex Interiors
+			</div>
+			<div class = "searchContainer">
+				<form action='searchOrders' method='get'>
+					<input class="search" type='text' value=''>
+					<input class="searchButton" type='submit' value="Search">
+				</form>
+			</div>
 		</div>
 
 		<div class="stationButtonContainer">
