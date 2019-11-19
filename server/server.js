@@ -2,7 +2,7 @@ var http 	= require('http');
 var fs 		= require('fs');
 var mysql 	= require('mysql');
 var url 	= require('url');
-var formidable 	= require('formidable');
+var body	= require('body/form');
 
 var activeDB = mysql.createPool({
 	connectionLimit	:	10,
@@ -125,8 +125,42 @@ http.createServer(function (req,res){
 	var q = url.parse(req.url, true);
 	var filename = q.pathname == '/' ? '/var/www/html/index.html' : '/var/www/html' + q.pathname; 
 	
+	if(q.pathname=='/login'){
+		body(req,{},(err,form) => {
+			if (err) console.log(form);
+
+			activeDB.query('select * from users where user = "'+form.userName+'";',(err,result) =>{
+				if(err){
+					console.log(err);
+					res.end();
+					return;
+				}
+				
+				if(result.length<1 && form.password == result[0].password){
+					//serve page with redirect to orders
+					res.writeHead(200,'{"Content-Type": "text/html"}');
+					res.write('<html><head><link rel="stylesheet" type="text/css" href="material.css"/></head>'+
+						'<body onload="window.history.back()"><div class="redirecting">redirecting</div></body></html>');
+					res.end();
+					return;
+				}
+				
+				fs.readFile('/var/www/html/loginbad',(err,data) => {
+					if(err) console.log(err);
+					
+					res.writeHead(200, '{"Content-Type": "text/html"}');
+					res.write(data);
+					res.end();	
+				});
+
+				
+			});
+		});
+		
+
+	}
 	//allOrders page
-	if(q.pathname =='/allOrders'){
+	else if(q.pathname =='/allOrders'){
 
 		//read begining and end of html template
 		fs.readFile('/var/www/html/shell',(err,data) => {
@@ -230,15 +264,17 @@ http.createServer(function (req,res){
 
 				fs.readFile('/var/www/html/shellend',(err,data2) =>{
 					activeDB.query('select * from tasks where taskId='+q.query.taskId,(err3,result) =>{
-						var outputHTML = '<div class="taskElements"><table><tr><td>Order ID</td><td>Pattern</td>><td>Primary Material</td><td>Trim Material</td><td>Date Ordered</td><td>'+result[0].orderId+
-						'<tr<td>'+result[0].pattern+
-						'</td></tr><tr><td>'+result[0].fabricOne+
-						'</td></tr><tr><td>'+result[0].fabricTwo+
-						'</td></tr><tr><td>'+(result[0].date.getMonth()+1)+'/'+result[0].date.getDate()+
+						var outputHTML = '<div class="taskElements">'+
+						'<table><tr><th>Order ID</th><th>Pattern</th><th>Primary Material</th><th>Trim Material</th><th>Date Ordered</th></tr>'+
+						'<tr><td>'+result[0].orderId+
+						'</td><td>'+result[0].pattern+
+						'</td><td>'+result[0].fabricOne+
+						'</td><td>'+result[0].fabricTwo+
+						'</td><td>'+(result[0].date.getMonth()+1)+'/'+result[0].date.getDate()+
 						'</td></tr></table></div>';
 						
-						outputHTML +='<button onclick="window.location=\'/taskView?taskId='+q.query.taskId+'&action=lock\'">Lock</button>'+
-							'<button onclick="window.location=\'/taskView?taskId='+q.query.taskId+'&action=complete\'">Complete</button>';
+						outputHTML +='<button class="lock" onclick="window.location=\'/taskView?taskId='+q.query.taskId+'&action=lock\'">Lock</button>'+
+							'<button class="complete" onclick="window.location=\'/taskView?taskId='+q.query.taskId+'&action=complete\'">Complete</button>';
 						res.writeHead(200, '{"Content-Type": "text/html"}');
 						res.write(data+
 							outputHTML+
@@ -273,7 +309,7 @@ http.createServer(function (req,res){
 	}
 
 	//task table pages
-	else if(q.query.sortBy != undefined){
+	else if(q.pathname =='/seatCutters' || q.pathname =='/seatSewers' || q.pathname =='/foamers' || q.pathname =='/wallCutters' || q.pathname =='/carpetSewers' || q.pathname =='/gluers' || q.pathname =='/miscCutters'){
 		
 		//if the path has a sortBy in the query string but not a valid pathname serve 404
 		if(responsibilities[q.pathname]==undefined){
