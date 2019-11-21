@@ -3,14 +3,17 @@ var fs 		= require('fs');
 var mysql 	= require('mysql');
 var url 	= require('url');
 var body	= require('body/form');
+var cookies	= require('cookies');
 
+var dbPassword='Doddstretch1234!';
 var activeDB = mysql.createPool({
 	connectionLimit	:	10,
 	host 		: 	'localhost',
 	user		:	"root",
-	password	:	"Doddstretch1234!",
+	password	:	dbPassword, //I need to read this from a file to keep it off of github
 	database 	:	"airtex"
 });
+
 
 //SQL queries for each filter and sort combination
 const seatCutterParts = 'part="seat assembly" and cut=0';
@@ -124,39 +127,79 @@ const mime = {
 http.createServer(function (req,res){
 	var q = url.parse(req.url, true);
 	var filename = q.pathname == '/' ? '/var/www/html/index.html' : '/var/www/html' + q.pathname; 
-	
-	if(q.pathname=='/login'){
-		body(req,{},(err,form) => {
-			if (err) console.log(form);
+	var cookieJar = new cookies(req,res,{keys:["temp"]}); //I have to read this from a file to keep it off of github
+	var timeout= 43200000;
 
-			activeDB.query('select * from users where user = "'+form.userName+'";',(err,result) =>{
-				if(err){
-					console.log(err);
-					res.end();
-					return;
-				}
+	//
+	if(cookieJar.get('lastAuthed',{signed:true})==undefined){
+		cookieJar.set('authed',false,{signed:true});
+		cookieJar.set('lastAuthed',Date.now(),{signed:true});
+	}
+	else if( Number(Date.now()) > Number(cookieJar.get('lastAuthed',{signed:true}))+timeout){
+		cookieJar.set('authed',false,{signed:true});
+	}
+
+	if(q.pathname=='/login'||!(q.pathname.split('.')[q.pathname.split('.').length-1]=='css' || cookieJar.get('authed',{signed:true}))){
+		if (req.method != 'POST'){
+			if(cookieJar.get('authed',{signed:true})){
 				
-				if(result.length<1 && form.password == result[0].password){
-					//serve page with redirect to orders
-					res.writeHead(200,'{"Content-Type": "text/html"}');
-					res.write('<html><head><link rel="stylesheet" type="text/css" href="material.css"/></head>'+
-						'<body onload="window.history.back()"><div class="redirecting">redirecting</div></body></html>');
-					res.end();
-					return;
-				}
-				
-				fs.readFile('/var/www/html/loginbad',(err,data) => {
+				//if the user has already authed redirect to allOrders
+				res.writeHead(200,'{"Content-Type": "text/html"}');
+				res.write('<html><head><link rel="stylesheet" type="text/css" href="material.css"/></head>'+
+					'<body onload="window.location=\'/allOrders\'">'+
+					'<div class="redirecting">redirecting</div></body></html>');
+				res.end();
+			}
+			else{
+				fs.readFile('/var/www/html/login',(err,data) => {
 					if(err) console.log(err);
 					
 					res.writeHead(200, '{"Content-Type": "text/html"}');
 					res.write(data);
 					res.end();	
 				});
+			}
+		}
 
-				
+		else {
+			body(req,{},(err,form) => {
+				if (err) console.log(form);
+
+				activeDB.query('select * from users where user = "'+form.userName+'";',(err,result) =>{
+					if(err){
+						console.log(err);
+						res.end();
+						return;
+					}
+
+					if(result.length>0 && form.password == result[0].password){
+
+						//set cookies for username, authed boolean, and date/time authed
+						cookieJar.set('username',form.userName,{signed:true});
+						cookieJar.set('authed',true,{signed:true});
+						cookieJar.set('lastAuthed',Date.now(),{signed:true});
+
+						//serve page with redirect to orders
+						res.writeHead(200,'{"Content-Type": "text/html"}');
+						res.write('<html><head><link rel="stylesheet" type="text/css" href="material.css"/></head>'+
+							'<body onload="window.location=\'/allOrders\'">'+
+							'<div class="redirecting">redirecting</div></body></html>');
+						res.end();
+					}
+					
+					else{
+						fs.readFile('/var/www/html/loginbad',(err,data) => {
+							if(err) console.log(err);
+							
+							res.writeHead(200, '{"Content-Type": "text/html"}');
+							res.write(data);
+							res.end();	
+						});
+					}
+					
+				});
 			});
-		});
-		
+		}	
 
 	}
 	//allOrders page
@@ -177,16 +220,16 @@ http.createServer(function (req,res){
 						'<th class="clickable">Date Ordered</th>'+
 						'<th class="clickable">First Name</th>'+
 						'<th class="clickable">Last Name</th>'+
-						'<th class="clickable">Installation</th></tr>';
+						'<th class="clickable">Ship To</th></tr>';
 					
 					//add table row for each order record
 					result.forEach((item) => {
 						outputHTML += '<tr class="clickable" onclick="window.location=\'/\';"><td>'+
 							item.orderId+
-							'</td><td>'+'to be implemented'+//(item.date.getMonth()+1)+'/'+item.date.getDate()+
+							'</td><td>'+(item.date.getMonth()+1)+'/'+item.date.getDate()+
 							'</td><td>'+item.firstName+
 							'</td><td>'+item.lastName+
-							'</td><td>'+item.installation == 1 ? "Install": "No Install"+
+							'</td><td>'+item.shippingAddress+
 							'</td></tr>';
 					});
 					outputHTML += '</table>';
@@ -285,16 +328,35 @@ http.createServer(function (req,res){
 			});
 		}
 	}
-
 	//addOrder page
 	else if(q.pathname == '/addOrder'){
-		//if the submit button was pressed add a task record
-		//just a preliminary implementation
+		if(q.method == 'POST'){
+			
+		}
+		else{
+			fs.readFile(filename,(err,data) => {
+				if(err) {
+					res.writeHead(404, '{"Content-Type": "text/html"}');
+					res.write("<h1>404 not found</h1>");
+					res.end();
+					return;
+				}
+				res.writeHead(200, '{"Content-Type": "'+mime[q.pathname.split('.')[q.pathname.split('.').length-1]]+'"}');
+				res.write(data);
+				res.end();
+			});
+		}
+	}
+	//addTask page
+	else if(q.pathname == '/addTask'){
+
 		activeDB.query('insert into tasks(pattern,fabricOne,fabricTwo,part,date) values ("'+
 			q.query.pattern+'","'+q.query.fabricOne+'","'+q.query.fabricTwo+'","'+q.query.part+'",localtime());',
 			(err,result) => {
 			if(err)console.log(err);
 		});
+		
+		
 		fs.readFile(filename,(err,data) => {
 			if(err) {
 				res.writeHead(404, '{"Content-Type": "text/html"}');
@@ -309,22 +371,17 @@ http.createServer(function (req,res){
 	}
 
 	//task table pages
-	else if(q.pathname =='/seatCutters' || q.pathname =='/seatSewers' || q.pathname =='/foamers' || q.pathname =='/wallCutters' || q.pathname =='/carpetSewers' || q.pathname =='/gluers' || q.pathname =='/miscCutters'){
-		
-		//if the path has a sortBy in the query string but not a valid pathname serve 404
-		if(responsibilities[q.pathname]==undefined){
-			res.writeHead(404, '{"Content-Type": "text/html"}');
-			res.write("<h1>404 not found</h1>");
-			res.end();
-			return;
-		}
+	else if(q.pathname =='/seatCutters' || q.pathname =='/seatSewers' || q.pathname =='/foamers' || q.pathname =='/wallCutters' ||
+		q.pathname =='/carpetSewers' || q.pathname =='/gluers' || q.pathname =='/miscCutters'){
 		
 		//read begining and end of the html template
 		fs.readFile('/var/www/html/shell',(err,data) => {
 			if(err)	console.log(err);
 
 			fs.readFile('/var/www/html/shellend',(err,data2) =>{
-				activeDB.query(responsibilities[q.pathname][q.query.sortBy],
+
+				//query db
+				activeDB.query(responsibilities[q.pathname][ (responsibilities[q.pathname][q.query.sortBy]) ? q.query.sortBy : 'Date'],
 					(err3,result) => {
 					if(err3)console.log(err3);
 
@@ -342,13 +399,15 @@ http.createServer(function (req,res){
 					
 					//add table row for each reccord returned by sql query
 					result.forEach((item) => {
-						outputHTML += '<tr class="taskRow" onclick="window.location=\'/taskView?taskId='+item.taskId+'\';"><td>'+
-							item.part+
-							'</td><td>'+(item.date.getMonth()+1)+'/'+item.date.getDate()+
-							'</td><td>'+item.pattern+
-							'</td><td>'+item.fabricOne+
-							'</td><td>'+item.fabricTwo+
-							'</td></tr>';
+						activeDB.query('select date from orders wher orderId='+item.orderId+';',(err,order)=>{
+							outputHTML += '<tr class="taskRow" onclick="window.location=\'/taskView?taskId='+item.taskId+'\';"><td>'+
+								item.part+
+								'</td><td>'+(order[0].date.getMonth()+1)+'/'+order[0].date.getDate()+
+								'</td><td>'+item.pattern+
+								'</td><td>'+item.fabricOne+
+								'</td><td>'+item.fabricTwo+
+								'</td></tr>';
+						});
 					});
 					outputHTML += '</table>';
 
