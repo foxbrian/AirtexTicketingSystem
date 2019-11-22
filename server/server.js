@@ -165,7 +165,7 @@ http.createServer(function (req,res){
 			body(req,{},(err,form) => {
 				if (err) console.log(form);
 
-				activeDB.query('select * from users where user = "'+form.userName+'";',(err,result) =>{
+				activeDB.query('select * from users where user = ?;',[form.userName],(err,result) =>{
 					if(err){
 						console.log(err);
 						res.end();
@@ -224,7 +224,7 @@ http.createServer(function (req,res){
 					
 					//add table row for each order record
 					result.forEach((item) => {
-						outputHTML += '<tr class="clickable" onclick="window.location=\'/\';"><td>'+
+						outputHTML += '<tr class="clickable" onclick="window.location=\'/orderView?orderId='+item.orderId+'\';"><td>'+
 							item.orderId+
 							'</td><td>'+(item.date.getMonth()+1)+'/'+item.date.getDate()+
 							'</td><td>'+item.firstName+
@@ -244,6 +244,41 @@ http.createServer(function (req,res){
 			});
 		});
 	}
+	//orderView page
+	else if(q.pathname == '/orderView'){
+
+		activeDB.query('select * from orders where orderId = ?;',[q.query.orderId],(err,order)=>{
+			activeDB.query('select * from tasks where orderId = ?;',[q.query.orderId],(err,tasks) =>{
+				var outputHTML = '<div class="taskElements"><table><tr><th>First Name</th><th>Last Name</th><th>Address</th><th>Date Ordered</th></tr>'+
+					'<tr><td>'+order[0].firstName+'</td><td>'+order[0].lastName+'</td><td>'+order[0].shippingAddress+
+					'</td><td>'+(order[0].date.getMonth()+1)+'/'+order[0].date.getDate()+'</td></tr></table></div>'+
+					'<div class="taskElements"><table><tr><th>Part</th><th>Plane</th><th>Primary Material</th><th>Secondary Material</th></tr>';
+					
+				tasks.forEach( (item,i,array) =>{
+					outputHTML += '<tr><td>'+item.part+'</td><td>'+item.pattern+'</td><td>'+item.fabricOne+'</td><td>'+item.fabricTwo+'</td></tr>';
+
+					if(i==array.length-1){
+						outputHTML +='</table></div>';
+						
+						fs.readFile('/var/www/html/shell',(err,data) => {
+							if(err)	console.log(err);
+
+							fs.readFile('/var/www/html/shellend',(err,data2) =>{
+
+								res.writeHead(200, '{"Content-Type": "text/html"}');
+								res.write(data+
+									outputHTML+
+									data2);
+								res.end();
+							});
+						});
+					}
+				});
+
+
+			});
+		});
+	}
 	//taskView page		
 	else if(q.pathname == '/taskView'){
 
@@ -251,7 +286,7 @@ http.createServer(function (req,res){
 		if(q.query.action=="lock"){
 			
 			//update locked column
-			activeDB.query('update tasks set locked=1 where taskId='+q.query.taskId,(err,result) =>{
+			activeDB.query('update tasks set locked=1 where taskId = ?;',[q.query.taskId],(err,result) =>{
 				if(err) {
 					console.log(err);
 					//write error page here
@@ -269,27 +304,34 @@ http.createServer(function (req,res){
 		else if(q.query.action=="complete"){
 			
 			//select task to perform logic
-			activeDB.query('select * from tasks where taskId='+q.query.taskId,(err,result) =>{
+			activeDB.query('select * from tasks where taskId= ?;',[q.query.taskId],(err,result) =>{
 				if(err) {
 					console.log(err);
 					//write error page here
 				}
 				var update = '';
+				
 				//headliners are only ever cut so always set all bools to true 
 				if(result[0].part == "Headliner") update ='cut=1, sewn=1, finished=1';
+				
 				//everything else needs to be cut and sent to the next station
 				else if(result[0].cut==0) update='cut=1';
-				//each of these items are only either cut and finished or cut and sewn so set everything to true on the second completion (after being cut)
-				else if(result[0].part in {'Wind Sock':'','Seat Sling':'','Baggage Compartment':'','Draft Boot':'','Shock Cord Boot':'','Wall Panel':'','Firewall Cover':''}) 
+				
+				//each of these items are only either cut and finished or cut and sewn 
+				//so set everything to true on the second completion (after being cut)
+				else if(result[0].part in {'Wind Sock':'','Seat Sling':'','Baggage Compartment':'',
+					'Draft Boot':'','Shock Cord Boot':'','Wall Panel':'','Firewall Cover':''}) 
 					update ='sewn=1,finished=1';
+				
 				//set sewn to true for everything else that has already been cut
 				else if( result[0].sewn==0) update='sewn=1';
+				
 				//if it's already been cut and sewn set to finished
 				else  update='finished=1';
-				
+				//
 				//perform the mysql update decided on above
-				activeDB.query('update tasks set '+update+',locked=0 where taskId='+q.query.taskId,(err,result) =>{
-
+				activeDB.query('update tasks set '+update+' ,locked=0 where taskId= ?;', [q.query.taskId],(err,result) =>{
+					if(err) console.log(err);
 				});
 			});
 
@@ -306,7 +348,7 @@ http.createServer(function (req,res){
 				if(err)	console.log(err);
 
 				fs.readFile('/var/www/html/shellend',(err,data2) =>{
-					activeDB.query('select * from tasks where taskId='+q.query.taskId,(err3,result) =>{
+					activeDB.query('select * from tasks where taskId=?;',[q.query.taskId],(err3,result) =>{
 						var outputHTML = '<div class="taskElements">'+
 						'<table><tr><th>Order ID</th><th>Pattern</th><th>Primary Material</th><th>Trim Material</th><th>Date Ordered</th></tr>'+
 						'<tr><td>'+result[0].orderId+
@@ -330,8 +372,22 @@ http.createServer(function (req,res){
 	}
 	//addOrder page
 	else if(q.pathname == '/addOrder'){
-		if(q.method == 'POST'){
-			
+		if(req.method == 'POST'){
+			body(req,{},(err,form) =>{
+				if(err) console.log(err);
+
+				activeDB.query('insert into orders(firstName,lastName,shippingAddress,date) values(?,?,?,localtime());',
+					[form.firstName,form.lastName,form.shippingAddress],(err,result) =>{
+
+					cookieJar.set('orderToEdit',result.insertId,{signed:true});
+
+					res.writeHead(200,'{"Content-Type": "text/html"}');
+					res.write('<html><head><link rel="stylesheet" type="text/css" href="material.css"/></head>'+
+						'<body onload="window.location=\'/addTask\'"><div class="redirecting">redirecting</div></body></html>');
+					res.end();
+
+				});
+			});
 		}
 		else{
 			fs.readFile(filename,(err,data) => {
@@ -349,14 +405,16 @@ http.createServer(function (req,res){
 	}
 	//addTask page
 	else if(q.pathname == '/addTask'){
-
-		activeDB.query('insert into tasks(pattern,fabricOne,fabricTwo,part,date) values ("'+
-			q.query.pattern+'","'+q.query.fabricOne+'","'+q.query.fabricTwo+'","'+q.query.part+'",localtime());',
-			(err,result) => {
-			if(err)console.log(err);
-		});
-		
-		
+		if(req.method=='POST'){
+			body(req,{},(err,form) => {
+				activeDB.query('insert into tasks(orderId,pattern,fabricOne,fabricTwo,part,date) values (?,?,?,?,?,localtime());',
+					[cookieJar.get('orderToEdit',{signed:true}),form.pattern,form.fabricOne,form.fabricTwo,form.part],
+					(err,result) => {
+					
+					if(err)console.log(err);
+				});
+			});
+		}
 		fs.readFile(filename,(err,data) => {
 			if(err) {
 				res.writeHead(404, '{"Content-Type": "text/html"}');
@@ -397,26 +455,31 @@ http.createServer(function (req,res){
 						'<th class="clickable" onclick="window.location=\''+q.pathname+'?sortBy='+
 							(q.query.sortBy=='TrimMaterial'?'TrimMaterialDesc':'TrimMaterial')+'\'">Trim Material</th></tr>';
 					
+
+					res.writeHead(200, '{"Content-Type": "text/html","Cache-Control": "no-store", "must-revalidate", "max-age=0"}');
+					res.write(data);res.write(outputHTML);
 					//add table row for each reccord returned by sql query
-					result.forEach((item) => {
-						activeDB.query('select date from orders wher orderId='+item.orderId+';',(err,order)=>{
-							outputHTML += '<tr class="taskRow" onclick="window.location=\'/taskView?taskId='+item.taskId+'\';"><td>'+
+					result.forEach((item, i ,array) => {
+						activeDB.query('select * from orders where orderId=?;',[item.orderId], (err,order)=>{
+							outputHTML = '<tr class="taskRow" onclick="window.location=\'/taskView?taskId='+item.taskId+'\';"><td>'+
 								item.part+
 								'</td><td>'+(order[0].date.getMonth()+1)+'/'+order[0].date.getDate()+
 								'</td><td>'+item.pattern+
 								'</td><td>'+item.fabricOne+
 								'</td><td>'+item.fabricTwo+
 								'</td></tr>';
+							//instead of building table and sending it all at once send it as it's being generated
+							res.write(outputHTML)
+							
+							//finish writing response in last iteration of for loop
+							if(i==array.length-1){
+								res.write('</table>'+
+									data2);
+								res.end();
+							}
 						});
 					});
-					outputHTML += '</table>';
 
-					//serve table in the middle of the html template
-					res.writeHead(200, '{"Content-Type": "text/html","Cache-Control": "no-store", "must-revalidate", "max-age=0"}');
-					res.write(data +
-						outputHTML+
-						data2);
-					res.end();
 				});
 			});
 		});

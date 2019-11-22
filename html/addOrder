@@ -18,10 +18,11 @@
 		</div>	
 		<button onclick="window.location='/'" class="searchButton">back</button>
 
-		<form method="get">
+		<form method="post">
 			First Name: <input type="text" name="firstName">
 			Last Name: <input type="text" name="lastName">
 			Shipping Address: <input type="text" name="address">
+			<input type="submit" value="Submit">
 		</form>
 
 	</body>
