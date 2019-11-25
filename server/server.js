@@ -130,7 +130,7 @@ http.createServer(function (req,res){
 	var cookieJar = new cookies(req,res,{keys:["temp"]}); //I have to read this from a file to keep it off of github
 	var timeout= 43200000;
 
-	//
+	//login timeout
 	if(cookieJar.get('lastAuthed',{signed:true})==undefined){
 		cookieJar.set('authed',false,{signed:true});
 		cookieJar.set('lastAuthed',Date.now(),{signed:true});
@@ -139,6 +139,7 @@ http.createServer(function (req,res){
 		cookieJar.set('authed',false,{signed:true});
 	}
 
+	//login page
 	if(q.pathname=='/login'||!(q.pathname.split('.')[q.pathname.split('.').length-1]=='css' || cookieJar.get('authed',{signed:true}))){
 		if (req.method != 'POST'){
 			if(cookieJar.get('authed',{signed:true})){
@@ -216,7 +217,8 @@ http.createServer(function (req,res){
 					if(err3) console.log(err3);
 					
 					//table headers
-					var outputHTML = '<table class="taskTable"><tr><th class="clickable">Order ID</th>'+
+					var outputHTML = '<div class="addOrder"><button class="addOrderButton" onclick="window.location=\'/addOrder\'">Add New Order</button></div>'+
+						'<table class="taskTable"><tr><th class="clickable">Order ID</th>'+
 						'<th class="clickable">Date Ordered</th>'+
 						'<th class="clickable">First Name</th>'+
 						'<th class="clickable">Last Name</th>'+
@@ -247,19 +249,58 @@ http.createServer(function (req,res){
 	//orderView page
 	else if(q.pathname == '/orderView'){
 
-		activeDB.query('select * from orders where orderId = ?;',[q.query.orderId],(err,order)=>{
-			activeDB.query('select * from tasks where orderId = ?;',[q.query.orderId],(err,tasks) =>{
-				var outputHTML = '<div class="taskElements"><table><tr><th>First Name</th><th>Last Name</th><th>Address</th><th>Date Ordered</th></tr>'+
-					'<tr><td>'+order[0].firstName+'</td><td>'+order[0].lastName+'</td><td>'+order[0].shippingAddress+
-					'</td><td>'+(order[0].date.getMonth()+1)+'/'+order[0].date.getDate()+'</td></tr></table></div>'+
-					'<div class="taskElements"><table><tr><th>Part</th><th>Plane</th><th>Primary Material</th><th>Secondary Material</th></tr>';
-					
-				tasks.forEach( (item,i,array) =>{
-					outputHTML += '<tr><td>'+item.part+'</td><td>'+item.pattern+'</td><td>'+item.fabricOne+'</td><td>'+item.fabricTwo+'</td></tr>';
+		cookieJar.set('orderToEdit',q.query.orderId,{signed:true});
 
-					if(i==array.length-1){
-						outputHTML +='</table></div>';
+		body(req,{},(err,form) =>{
+			if(err) console.log(err);
+			
+			if(form.delete){
+				activeDB.query('delete from tasks where taskId=?;',[form.delete],(err,result)=>{
+					if(err) console.log(err);
+				});
+			}
+
+			activeDB.query('select * from orders where orderId = ?;',[q.query.orderId],(err,order)=>{
+				activeDB.query('select * from tasks where orderId = ?;',[q.query.orderId],(err,tasks) =>{
+					var outputHTML = '<div class="taskElements"><table><tr><th>First Name</th><th>Last Name</th>'+
+						'<th>Address</th><th>Date Ordered</th></tr>'+
+						'<tr><td>'+order[0].firstName+'</td><td>'+order[0].lastName+'</td><td>'+order[0].shippingAddress+
+						'</td><td>'+(order[0].date.getMonth()+1)+'/'+order[0].date.getDate()+'</td></tr></table></div>';
 						
+					if(tasks[0]){
+						outputHTML += '<div class="taskElements"><table><tr><th></th><th>Part</th><th>Plane</th>'+
+						'<th>Primary Material</th><th>Secondary Material</th></tr>';
+
+						tasks.forEach( (item,i,array) =>{
+							outputHTML += '<tr><td><form  method="post" action="/orderView?orderId='+q.query.orderId+
+							'"><input type="submit" class="deleteButton" value="Delete">'+
+							'<input type="hidden" name="delete" value="'+item.taskId+'"></form>'+
+							'</td><td>'+item.part+'</td><td>'+item.pattern+'</td><td>'+item.fabricOne+'</td><td>'+item.fabricTwo+'</td></tr>';
+
+							if(i==array.length-1){
+								outputHTML +='</table></div>'+
+								'<button class=searchButton onclick="window.location=\'/addTask\'">Add New Item</button>';
+								
+								fs.readFile('/var/www/html/shell',(err,data) => {
+									if(err)	console.log(err);
+
+									fs.readFile('/var/www/html/shellend',(err,data2) =>{
+
+										res.writeHead(200, '{"Content-Type": "text/html"}');
+										res.write(data+
+											outputHTML+
+											data2);
+										res.end();
+									});
+								});
+							}
+						});
+					}
+					else{
+
+						outputHTML+='<div class="noTasks">There are no tasks associated with this order</div>'+
+								'<button class=searchButton onclick="window.location=\'/addTask\'">Add New Item</button>';
+
 						fs.readFile('/var/www/html/shell',(err,data) => {
 							if(err)	console.log(err);
 
@@ -273,9 +314,9 @@ http.createServer(function (req,res){
 							});
 						});
 					}
+
+
 				});
-
-
 			});
 		});
 	}
@@ -377,7 +418,7 @@ http.createServer(function (req,res){
 				if(err) console.log(err);
 
 				activeDB.query('insert into orders(firstName,lastName,shippingAddress,date) values(?,?,?,localtime());',
-					[form.firstName,form.lastName,form.shippingAddress],(err,result) =>{
+					[form.firstName,form.lastName,form.address],(err,result) =>{
 
 					cookieJar.set('orderToEdit',result.insertId,{signed:true});
 
@@ -483,6 +524,10 @@ http.createServer(function (req,res){
 				});
 			});
 		});
+	}
+	//search
+	else if(q.pathname=='/search'){
+		if(q.query.
 	}
 	//serve file in html folder or 404 page
 	else{
