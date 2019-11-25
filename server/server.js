@@ -4,14 +4,14 @@ var mysql 	= require('mysql');
 var url 	= require('url');
 var body	= require('body/form');
 var cookies	= require('cookies');
+var config 	= require('./config');
 
-var dbPassword='Doddstretch1234!';
 var activeDB = mysql.createPool({
 	connectionLimit	:	10,
-	host 		: 	'localhost',
-	user		:	"root",
-	password	:	dbPassword, //I need to read this from a file to keep it off of github
-	database 	:	"airtex"
+	host 		: 	config.host,
+	user		:	config.user,
+	password	:	config.pw,
+	database 	:	config.db
 });
 
 
@@ -127,7 +127,7 @@ const mime = {
 http.createServer(function (req,res){
 	var q = url.parse(req.url, true);
 	var filename = q.pathname == '/' ? '/var/www/html/index.html' : '/var/www/html' + q.pathname; 
-	var cookieJar = new cookies(req,res,{keys:["temp"]}); //I have to read this from a file to keep it off of github
+	var cookieJar = new cookies(req,res,{keys:[config.key]}); 
 	var timeout= 43200000;
 
 	//login timeout
