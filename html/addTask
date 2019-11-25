@@ -1,0 +1,245 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<body>
+	<head>
+		<link rel="stylesheet" type="text/css" href="material.css"/>
+	</head>
+		<div class="banner">
+			<div class = "title">
+				Airtex Interiors
+			</div>
+			<div class = "searchContainer">
+				<form action='search' method='get'>
+					<input class="search" type='text' name="search" value=''>
+					<input class="searchButton" type='submit' value="Search">
+				</form>
+			</div>
+		</div>
+		
+		<button onclick="window.location='/allOrders'" class="searchButton">Back</button>
+		
+		<form method="post">
+			<div class="addTask">			
+				<select name="pattern">
+					<option value="Aeronca Chief, 65CA">Aeronca Chief, 65CA</option>
+					<option value="Aeronca Chief, 11AC">Aeronca Chief, 11AC</option>
+					<option value="Aeronca Champ, narrow seat">Aeronca Champ, narrow seat</option>
+					<option value="Aeronca Champ, wide rear seat">Aeronca Champ, wide rear seat</option>
+					<option value="Aeronca Sedan, 15AC">Aeronca Sedan, 15AC</option>
+					<option value="Alon">Alon</option>
+					<option value="American Yankee">American Yankee</option>
+					<option value="Beech Sport">Beech Sport</option>
+					<option value="Beech Skipper">Beech Skipper</option>
+					<option value="Beech Bonanza (1947 thru 1969)">Beech Bonanza (1947 thru 1969)</option>
+					<option value="Baron (1947 thru 1969)">Baron (1947 thru 1969)</option>
+					<option value="Debonair (1947 thru 1969)">Debonair (1947 thru 1969)</option>
+					<option value="Travelair (1947 thru 1969)">Travelair (1947 thru 1969)</option>
+					<option value="Beech Bonanza (1970 & later)">Beech Bonanza (1970 & later)</option>
+					<option value="Baron (1970 & later)">Baron (1970 & later)</option>
+					<option value="Debonair (1970 & later)">Debonair (1970 & later)</option>
+					<option value="Travelair (1970 & later)">Travelair (1970 & later)</option>
+					<option value="Beech Sierra">Beech Sierra</option>
+					<option value="Sundowner">Sundowner</option>
+					<option value="Musketeer">Musketeer</option>
+					<option value="Duchess">Duchess</option>
+					<option value="Bellanca 14-13">Bellanca 14-13</option>
+					<option value="Cessna 140 (thick bottoms)">Cessna 140 (thick bottoms)</option>
+					<option value="Cessna 120 (thick bottoms)">Cessna 120 (thick bottoms)</option>
+					<option value="Cessna 140 (framed bottoms)">Cessna 140 (framed bottoms)</option>
+					<option value="Cessna 150, (1959 thru 1960)">Cessna 150, (1959 thru 1960)</option>
+					<option value="Cessna 150 (1961 and later)">Cessna 150 (1961 and later)</option>
+					<option value="Cessna 152 (1961 and later)">Cessna 152 (1961 and later)</option>
+					<option value="Cessna 170 thru 185">Cessna 170 thru 185</option>
+					<option value="Cessna 188">Cessna 188</option>
+					<option value="Cessna 190">Cessna 190</option>
+					<option value="Cessna 195">Cessna 195</option>
+					<option value="Cessna 205">Cessna 205</option>
+					<option value="Cessna 206">Cessna 206</option>
+					<option value="Cessna 207">Cessna 207</option>
+					<option value="Cessna 208">Cessna 208</option>
+					<option value="Cessna 209">Cessna 209</option>
+					<option value="Cessna 210">Cessna 210</option>
+					<option value="Cessna 210, (1964 thru 1969)">Cessna 210, (1964 thru 1969)</option>
+					<option value="Cessna 210, (1970 and later)">Cessna 210, (1970 and later)</option>
+					<option value="Cessna 310">Cessna 310</option>
+					<option value="Cessna 310 (1963 and later)">Cessna 310 (1963 and later)</option>
+					<option value="Cessna 320 (1963 and later)">Cessna 320 (1963 and later)</option>
+					<option value="Cessna 336">Cessna 336</option>
+					<option value="Cessna 337">Cessna 337</option>
+					<option value="Cessna L-19">Cessna L-19</option>
+					<option value="Champion Citabria narrow seat">Champion Citabria narrow seat</option>
+					<option value="Champion Citabria wide rear seat">Champion Citabria wide rear seat</option>
+					<option value="Ercoupe (with 1 pc. bottom cushion)">Ercoupe (with 1 pc. bottom cushion)</option>
+					<option value="Funk (with seat slings)">Funk (with seat slings)</option>
+					<option value="Grumman AA-5B">Grumman AA-5B</option>
+					<option value="Grumman AA-5">Grumman AA-5</option>
+					<option value="Grumman Traveler">Grumman Traveler</option>
+					<option value="Grumman Cougar">Grumman Cougar</option>
+					<option value="Lake Buccaneer">Lake Buccaneer</option>
+					<option value="Luscombe 8 series">Luscombe 8 series</option>
+					<option value="Mooney 1955-1963">Mooney 1955-1963</option>
+					<option value="Mooney 1964-1981">Mooney 1964-1981</option>
+					<option value="Mooney 1982 & up">Mooney 1982 & up</option>
+					<option value="Navion (give mfr. and year)">Navion (give mfr. and year)</option>
+					<option value="Partenavia">Partenavia</option>
+					<option value="Piper J-3">Piper J-3</option>
+					<option value="Piper PA-11">Piper PA-11</option>
+					<option value="Piper J-4">Piper J-4</option>
+					<option value="Piper J-5">Piper J-5</option>
+					<option value="Piper PA-12 (sling type)">Piper PA-12 (sling type)</option>
+					<option value="Piper PA-12 (#12-3995 & up)">Piper PA-12 (#12-3995 & up)</option>
+					<option value="Piper PA-15/17 (includes seat sling)">Piper PA-15/17 (includes seat sling)</option>
+					<option value="Piper PA-18">Piper PA-18</option>
+					<option value="Piper PA-20">Piper PA-20</option>
+					<option value="Piper PA-22">Piper PA-22</option>
+					<option value="Piper PA-16">Piper PA-16</option>
+					<option value="Piper Colt">Piper Colt</option>
+					<option value="Piper PA-23 Apache">Piper PA-23 Apache</option>
+					<option value="Piper PA-23 Apache">Piper PA-23 Apache</option>
+					<option value="Piper PA-23 Aztec">Piper PA-23 Aztec</option>
+					<option value="Piper PA-23 Aztec">Piper PA-23 Aztec</option>
+					<option value="Piper Comanche PA-24-30-39">Piper Comanche PA-24-30-39</option>
+					<option value="Piper Comanche PA-24-30-39">Piper Comanche PA-24-30-39</option>
+					<option value="Piper PA-28 Cherokee">Piper PA-28 Cherokee</option>
+					<option value="Piper PA-28 Cherokee">Piper PA-28 Cherokee</option>
+					<option value="Piper PA-32 and 34">Piper PA-32 and 34</option>
+					<option value="Piper PA-38 Tomahawk">Piper PA-38 Tomahawk</option>
+					<option value="Piper Seminole PA-44">Piper Seminole PA-44</option>
+					<option value="Republic Seabee">Republic Seabee</option>
+					<option value="Rockwell Commander 112">Rockwell Commander 112</option>
+					<option value="Rockwell Commander 114">Rockwell Commander 114</option>
+					<option value="Stearman">Stearman</option>
+					<option value="Stinson 108 series">Stinson 108 series</option>
+					<option value="Swift (state manufacturer)">Swift (state manufacturer)</option>
+					<option value="Taylorcraft B series">Taylorcraft B series</option>
+					<option value="Taylorcraft 19 series">Taylorcraft 19 series</option>
+				</select>
+				<select name="part">
+					<option value="Seat Assembly">Seat Assembly</option>
+					<option value="Wall Panel">Wall Panel</option>
+					<option value="Headliner">Headliner</option>
+					<option value="Carpet">Carpet</option>
+					<option value="Seat Sling">Seat Sling</option>
+					<option value="Baggage Compartment">Baggage Compartment</option>
+					<option value="Draft Boot">Draft Boot</option>
+					<option value="Sock Cord Boot">Shock Cord Boot</option>
+					<option value="Firewall Cover">Firewall Cover</option>
+					<option value="Windsock">WindSock</option>
+				</select>
+				<select name="fabricOne">
+					<option value="n/a">n/a</option>
+					<option value="Silver">Silver</option>
+					<option value="Charcoal">Charcoal</option>
+					<option value="Camel">Camel</option>
+					<option value="Taupe">Taupe</option>
+					<option value="Magenta">Magenta</option>
+					<option value="Beryl">Beryl</option>
+					<option value="Iron">Iron</option>
+					<option value="Ash">Ash</option>
+					<option value="Tawny">Tawny</option>
+					<option value="Biscuit">Biscuit</option>
+					<option value="Port">Port</option>
+					<option value="Wedgewood">Wedgewood</option>
+					<option value="Dove">Dove</option>
+					<option value="Slate">Slate</option>
+					<option value="Barley">Barley</option>
+					<option value="Elk">Elk</option>
+					<option value="Cherry">Cherry</option>
+					<option value="Cadet">Cadet</option>
+					<option value="Smoke">Smoke</option>
+					<option value="Tan">Tan</option>
+					<option value="Cinnamon">Cinnamon</option>
+					<option value="Flame">Flame</option>
+					<option value="Mediterranean">Mediterranean</option>
+					<option value="Coal">Coal</option>
+					<option value="Chocolate">Chocolate</option>
+					<option value="Buff">Buff</option>
+					<option value="Evergreen">Evergreen</option>
+					<option value="Maple">Maple</option>
+					<option value="Ginger">Ginger</option>
+					<option value="Hershey">Hershey</option>
+					<option value="Auburn">Auburn</option>
+					<option value="Terra Cotta">Terra Cotta</option>
+					<option value="Royal">Royal</option>
+					<option value="Sesame">Sesame</option>
+					<option value="Palomino">Palomino</option>
+					<option value="Onyx">Onyx</option>
+					<option value="Clover">Clover</option>
+					<option value="Mica">Mica</option>
+					<option value="Sandalwood">Sandalwood</option>
+					<option value="Parchment">Parchment</option>
+					<option value="Grey">Grey</option>
+					<option value="Flint">Flint</option>
+					<option value="Black">Black</option>
+					<option value="Sand">Sand</option>
+					<option value="Beige">Beige</option>
+					<option value="Gold">Gold</option>
+					<option value="Navy">Navy</option>
+					<option value="Green">Green</option>
+					<option value="Red">Red</option>
+					<option value="Wine">Wine</option>
+					<option value="Saddle">Saddle</option>
+					<option value="Brown">Brown</option>
+				</select>
+				<select name="fabricTwo">
+					<option value="n/a">n/a</option>
+					<option value="Silver">Silver</option>
+					<option value="Charcoal">Charcoal</option>
+					<option value="Camel">Camel</option>
+					<option value="Taupe">Taupe</option>
+					<option value="Magenta">Magenta</option>
+					<option value="Beryl">Beryl</option>
+					<option value="Iron">Iron</option>
+					<option value="Ash">Ash</option>
+					<option value="Tawny">Tawny</option>
+					<option value="Biscuit">Biscuit</option>
+					<option value="Port">Port</option>
+					<option value="Wedgewood">Wedgewood</option>
+					<option value="Dove">Dove</option>
+					<option value="Slate">Slate</option>
+					<option value="Barley">Barley</option>
+					<option value="Elk">Elk</option>
+					<option value="Cherry">Cherry</option>
+					<option value="Cadet">Cadet</option>
+					<option value="Smoke">Smoke</option>
+					<option value="Tan">Tan</option>
+					<option value="Cinnamon">Cinnamon</option>
+					<option value="Flame">Flame</option>
+					<option value="Mediterranean">Mediterranean</option>
+					<option value="Coal">Coal</option>
+					<option value="Chocolate">Chocolate</option>
+					<option value="Buff">Buff</option>
+					<option value="Evergreen">Evergreen</option>
+					<option value="Maple">Maple</option>
+					<option value="Ginger">Ginger</option>
+					<option value="Hershey">Hershey</option>
+					<option value="Auburn">Auburn</option>
+					<option value="Terra Cotta">Terra Cotta</option>
+					<option value="Royal">Royal</option>
+					<option value="Sesame">Sesame</option>
+					<option value="Palomino">Palomino</option>
+					<option value="Onyx">Onyx</option>
+					<option value="Clover">Clover</option>
+					<option value="Mica">Mica</option>
+					<option value="Sandalwood">Sandalwood</option>
+					<option value="Parchment">Parchment</option>
+					<option value="Grey">Grey</option>
+					<option value="Flint">Flint</option>
+					<option value="Black">Black</option>
+					<option value="Sand">Sand</option>
+					<option value="Beige">Beige</option>
+					<option value="Gold">Gold</option>
+					<option value="Navy">Navy</option>
+					<option value="Green">Green</option>
+					<option value="Red">Red</option>
+					<option value="Wine">Wine</option>
+					<option value="Saddle">Saddle</option>
+					<option value="Brown">Brown</option>
+				</select>
+			</div>
+			<input value="Add Order" type="submit"/>
+		</form>
+
+	</body>
+</html>

@@ -21,8 +21,8 @@
 				Airtex Interiors
 			</div>
 			<div class = "searchContainer">
-				<form action='searchOrders' method='get'>
-					<input class="search" type='text' value=''>
+				<form action='search' method='get'>
+					<input class="search" type='text' name="search" value=''>
 					<input class="searchButton" type='submit' value="Search">
 				</form>
 			</div>

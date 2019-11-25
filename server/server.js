@@ -527,7 +527,45 @@ http.createServer(function (req,res){
 	}
 	//search
 	else if(q.pathname=='/search'){
-		if(q.query.
+		fs.readFile('/var/www/html/shell',(err,data)=>{	
+			fs.readFile('/var/www/html/shellend',(err,data2)=>{
+				if(q.query.search){
+					activeDB.query('select * from orders where orderId=?;',[q.query.search],(err,result)=>{
+						if(result[0]){
+							//redirect to order page
+							res.writeHead(200,'{"Content-Type": "text/html"}');
+							res.write('<html><head><link rel="stylesheet" type="text/css" href="material.css"/></head>'+
+								'<body onload="window.location=\'/orderView?orderId='+q.query.search+'\'"><div class="redirecting">redirecting</div></body></html>');
+							res.end();
+							
+						}
+						else{
+							activeDB.query('select * from tasks where taskId=?;',[q.query.search],(err,result)=>{
+								if(result[0]){
+									//redirect to task page
+									res.writeHead(200,'{"Content-Type": "text/html"}');
+									res.write('<html><head><link rel="stylesheet" type="text/css" href="material.css"/></head>'+
+										'<body onload="window.location=\'/taskView?taskId='+q.query.search+'\'"><div class="redirecting">redirecting</div></body></html>');
+									res.end();
+
+								}
+								else{
+
+									res.writeHead(200, '{"Content-Type": "text/html"}');
+									res.write(data+'<div class="noResults">No Results</div>'+data2);
+									res.end();
+								}
+							});
+						}
+					});
+				}
+				else{
+					res.writeHead(200, '{"Content-Type": "text/html"}');
+					res.write(data+'<div class="noResults">No Results</div>'+data2);
+					res.end();
+				}
+			});
+		});
 	}
 	//serve file in html folder or 404 page
 	else{
