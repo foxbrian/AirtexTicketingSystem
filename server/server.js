@@ -272,7 +272,7 @@ http.createServer(function (req,res){
 						'<th>Primary Material</th><th>Secondary Material</th></tr>';
 
 						tasks.forEach( (item,i,array) =>{
-							outputHTML += '<tr><td><form  method="post" action="/orderView?orderId='+q.query.orderId+
+							outputHTML += '<tr><td><form onsubmit="return confirm(\'Delete Item?\');" method="post" action="/orderView?orderId='+q.query.orderId+
 							'"><input type="submit" class="deleteButton" value="Delete">'+
 							'<input type="hidden" name="delete" value="'+item.taskId+'"></form>'+
 							'</td><td>'+item.part+'</td><td>'+item.pattern+'</td><td>'+item.fabricOne+'</td><td>'+item.fabricTwo+'</td></tr>';
