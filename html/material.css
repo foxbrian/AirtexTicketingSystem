@@ -65,6 +65,9 @@ body, html{
 	border-collapse: 		collapse;
 	width:				100%;
 }
+.taskElements{
+	margin-bottom:			1vh;
+}
 .taskTable tr:first-child,
 .taskElements tr:first-child{
 	background-color:		var(--primary-color);
@@ -96,4 +99,58 @@ body, html{
 	color: 				var(--primary-color);
 	margin:				10px 10px 10px 10px;
 }
+.loginContainer{
+	text-align:			center;
+	padding: 			1vh 1vw 1vh 1vw;
+}
 
+input.search, input.conplete{
+	margin: 			1vh 1vw 1vh 1vw;
+}
+.addOrder{
+	margin: 			0 0 1vh 0;
+}
+.addOrderButton, input.deleteButton{
+	color: 				var(--primary-color);
+}
+input.deleteButton{
+	margin: 2px 0 2px 0;
+}
+button:hover, input.deleteButton:hover{
+	cursor: pointer;
+}
+input{
+	color:				var(--primary-color);
+}
+div.addTask select, option{
+	color:				var(--primary-color);
+}
+div.addTask{
+	margin: 2vh 0 2vh 0;
+	text-align: center;
+}
+div.addTask select{
+	margin-right: 5vw;
+	height: 4vh;
+	font-size: 1.2em;
+}
+.backButton{
+	margin: 0 0 1vh 4vw;
+	font-size: 1.1em;
+	text-transform: capitalize;	
+}
+.submitButton{
+	margin: 1vh 0 0 4vw;
+	font-size: 1.1em;
+	text-transform: capitalize;
+}
+button, input{
+	border-radius: 2px 2px 2px 2px;
+}
+.addOrderInput{
+	text-align: center;
+}
+.addOrderInput input, .addOrderInput #text{
+	font-size: 1.2em;
+	margin: 1vh 0 1vh 0;
+}

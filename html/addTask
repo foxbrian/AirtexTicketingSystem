@@ -17,7 +17,7 @@
 			</div>
 		</div>
 		
-		<button onclick="window.location='/allOrders'" class="searchButton">Back</button>
+		<button onclick="window.location='/allOrders'" class="searchButton backButton">Back</button>
 		
 		<form method="post">
 			<div class="addTask">			
@@ -238,7 +238,7 @@
 					<option value="Brown">Brown</option>
 				</select>
 			</div>
-			<input value="Add Order" type="submit"/>
+			<input value="Add Order" class="submitButton" type="submit"/>
 		</form>
 
 	</body>

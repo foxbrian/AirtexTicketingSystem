@@ -16,14 +16,14 @@
 				</form>
 			</div>
 		</div>	
-		<button onclick="window.location='/'" class="searchButton">back</button>
+		<button onclick="window.location='/'" class="searchButton backButton">back</button>
 
-		<form method="post">
-			First Name: <input type="text" name="firstName">
-			Last Name: <input type="text" name="lastName">
-			Shipping Address: <input type="text" name="address">
-			<input type="submit" value="Submit">
+		<form method="post" class="addOrderInput">
+			First Name: <input type="text" name="firstName"><br>
+			Last Name: <input type="text" name="lastName"><br>
+			Shipping Address: <input type="text" name="address"><br>
+			<input type="submit" class="submitButton" value="Submit">		
 		</form>
-
+		
 	</body>
 </html>
