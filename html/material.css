@@ -116,7 +116,7 @@ input.search, input.conplete{
 input.deleteButton{
 	margin: 2px 0 2px 0;
 }
-button:hover, input.deleteButton:hover{
+button:hover, input.deleteButton:hover, input.complete:hover, input.searchButton:hover, input.submitButton:hover{
 	cursor: pointer;
 }
 input{
@@ -153,4 +153,13 @@ button, input{
 .addOrderInput input, .addOrderInput #text{
 	font-size: 1.2em;
 	margin: 1vh 0 1vh 0;
+}
+.user, .pass, .firstName,.lastName, .shippingAddress{
+	width: 40vw;
+	margin-left: 20vw;
+	text-align: right;
+
+}
+.firstName, .lastName, .shippingAddress{
+	margin-left: 21vw;
 }

@@ -19,9 +19,9 @@
 		<button onclick="window.location='/'" class="searchButton backButton">back</button>
 
 		<form method="post" class="addOrderInput">
-			First Name: <input type="text" name="firstName"><br>
-			Last Name: <input type="text" name="lastName"><br>
-			Shipping Address: <input type="text" name="address"><br>
+			<div class="firstName">First Name: <input type="text" name="firstName"></div>
+			<div class="lastName">Last Name: <input type="text" name="lastName"></div>
+			<div class="shippingAddress">Shipping Address: <input type="text" name="address"></div>
 			<input type="submit" class="submitButton" value="Submit">		
 		</form>
 		

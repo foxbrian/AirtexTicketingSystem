@@ -7,7 +7,7 @@ var cookies	= require('cookies');
 var config 	= require('./config');
 
 var activeDB = mysql.createPool({
-	connectionLimit	:	10,
+	connectionLimit	:	100,
 	host 		: 	config.host,
 	user		:	config.user,
 	password	:	config.pw,
@@ -372,7 +372,11 @@ http.createServer(function (req,res){
 				//
 				//perform the mysql update decided on above
 				activeDB.query('update tasks set '+update+' ,locked=0 where taskId= ?;', [q.query.taskId],(err,result) =>{
-					if(err) console.log(err);
+					if(err){
+						console.log(err);
+						return;
+					}
+
 				});
 			});
 
@@ -500,6 +504,12 @@ http.createServer(function (req,res){
 					res.writeHead(200, '{"Content-Type": "text/html","Cache-Control": "no-store", "must-revalidate", "max-age=0"}');
 					res.write(data);res.write(outputHTML);
 					//add table row for each reccord returned by sql query
+					if(! result[0]){
+						res.write('</table>'+
+							data2);
+						res.end();
+						return;
+					}
 					result.forEach((item, i ,array) => {
 						activeDB.query('select * from orders where orderId=?;',[item.orderId], (err,order)=>{
 							outputHTML = '<tr class="taskRow" onclick="window.location=\'/taskView?taskId='+item.taskId+'\';"><td>'+
