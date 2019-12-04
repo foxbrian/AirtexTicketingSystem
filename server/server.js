@@ -26,88 +26,88 @@ const foamerParts = 'part="seat assembly" and sewn=1 and finished=0';
 
 const responsibilities = {
 	'/seatCutters'	: {
-		'Date'			: 'select * from tasks where '+seatCutterParts+' order by date asc;',
-		'Part'			: 'select * from tasks where '+seatCutterParts+' order by part asc, date asc;',
-		'Pattern'		: 'select * from tasks where '+seatCutterParts+' order by pattern asc, date asc;',
-		'Material'		: 'select * from tasks where '+seatCutterParts+' order by fabricOne asc, fabricTwo asc, date asc;',
-		'TrimMaterial'		: 'select * from tasks where '+seatCutterParts+' order by fabricTwo asc, fabricOne asc, date asc;',
-		'DateDesc'		: 'select * from tasks where '+seatCutterParts+' order by date desc;',
-		'PartDesc'		: 'select * from tasks where '+seatCutterParts+' order by part desc, date asc;',
-		'PatternDesc'		: 'select * from tasks where '+seatCutterParts+' order by pattern desc, date asc;',
-		'MaterialDesc'		: 'select * from tasks where '+seatCutterParts+' order by fabricOne desc, fabricTwo asc, date asc;',
-		'TrimMaterialDesc'	: 'select * from tasks where '+seatCutterParts+' order by fabricTwo desc, fabricOne asc, date asc;'
+		'Date'			: 'select * from tasks where '+seatCutterParts+' order by locked asc, date asc;',
+		'Part'			: 'select * from tasks where '+seatCutterParts+' order by locked asc, part asc, date asc;',
+		'Pattern'		: 'select * from tasks where '+seatCutterParts+' order by locked asc, pattern asc, date asc;',
+		'Material'		: 'select * from tasks where '+seatCutterParts+' order by locked asc, fabricOne asc, fabricTwo asc, date asc;',
+		'TrimMaterial'		: 'select * from tasks where '+seatCutterParts+' order by locked asc, fabricTwo asc, fabricOne asc, date asc;',
+		'DateDesc'		: 'select * from tasks where '+seatCutterParts+' order by locked asc, date desc;',
+		'PartDesc'		: 'select * from tasks where '+seatCutterParts+' order by locked asc, part desc, date asc;',
+		'PatternDesc'		: 'select * from tasks where '+seatCutterParts+' order by locked asc, pattern desc, date asc;',
+		'MaterialDesc'		: 'select * from tasks where '+seatCutterParts+' order by locked asc, fabricOne desc, fabricTwo asc, date asc;',
+		'TrimMaterialDesc'	: 'select * from tasks where '+seatCutterParts+' order by locked asc, fabricTwo desc, fabricOne asc, date asc;'
 	},
 	'/wallCutters'	: {
-		'Date'			: 'select * from tasks where '+wallCutterParts+' order by date asc;',
-		'Part'			: 'select * from tasks where '+wallCutterParts+' order by part asc, date asc;',
-		'Pattern'		: 'select * from tasks where '+wallCutterParts+' order by pattern asc, date asc;',
-		'Material'		: 'select * from tasks where '+wallCutterParts+' order by fabricOne asc, fabricTwo asc, date asc;',
-		'TrimMaterial'		: 'select * from tasks where '+wallCutterParts+' order by fabricTwo asc, fabricOne asc, date asc;',
-		'DateDesc'		: 'select * from tasks where '+wallCutterParts+' order by date desc;',
-		'PartDesc'		: 'select * from tasks where '+wallCutterParts+' order by part desc, date asc;',
-		'PatternDesc'		: 'select * from tasks where '+wallCutterParts+' order by pattern desc, date asc;',
-		'MaterialDesc'		: 'select * from tasks where '+wallCutterParts+' order by fabricOne desc, fabricTwo asc, date asc;',
-		'TrimMaterialDesc'	: 'select * from tasks where '+wallCutterParts+' order by fabricTwo desc, fabricOne asc, date asc;'
+		'Date'			: 'select * from tasks where '+wallCutterParts+' order by locked asc, date asc;',
+		'Part'			: 'select * from tasks where '+wallCutterParts+' order by locked asc, part asc, date asc;',
+		'Pattern'		: 'select * from tasks where '+wallCutterParts+' order by locked asc, pattern asc, date asc;',
+		'Material'		: 'select * from tasks where '+wallCutterParts+' order by locked asc, fabricOne asc, fabricTwo asc, date asc;',
+		'TrimMaterial'		: 'select * from tasks where '+wallCutterParts+' order by locked asc, fabricTwo asc, fabricOne asc, date asc;',
+		'DateDesc'		: 'select * from tasks where '+wallCutterParts+' order by locked asc, date desc;',
+		'PartDesc'		: 'select * from tasks where '+wallCutterParts+' order by locked asc, part desc, date asc;',
+		'PatternDesc'		: 'select * from tasks where '+wallCutterParts+' order by locked asc, pattern desc, date asc;',
+		'MaterialDesc'		: 'select * from tasks where '+wallCutterParts+' order by locked asc, fabricOne desc, fabricTwo asc, date asc;',
+		'TrimMaterialDesc'	: 'select * from tasks where '+wallCutterParts+' order by locked asc, fabricTwo desc, fabricOne asc, date asc;'
 	},
 	'/seatSewers'	: {
-		'Date'			: 'select * from tasks where '+seatSewerParts+' order by date asc;',
-		'Part'			: 'select * from tasks where '+seatSewerParts+' order by part asc, date asc;',
-		'Pattern'		: 'select * from tasks where '+seatSewerParts+' order by pattern asc, date asc;',
-		'Material'		: 'select * from tasks where '+seatSewerParts+' order by fabricOne asc, fabricTwo asc, date asc;',
-		'TrimMaterial'		: 'select * from tasks where '+seatSewerParts+' order by fabricTwo asc, fabricOne asc, date asc;',
-		'DateDesc'		: 'select * from tasks where '+seatSewerParts+' order by date desc;',
-		'PartDesc'		: 'select * from tasks where '+seatSewerParts+' order by part desc, date asc;',
-		'PatternDesc'		: 'select * from tasks where '+seatSewerParts+' order by pattern desc, date asc;',
-		'MaterialDesc'		: 'select * from tasks where '+seatSewerParts+' order by fabricOne desc, fabricTwo asc, date asc;',
-		'TrimMaterialDesc'	: 'select * from tasks where '+seatSewerParts+' order by fabricTwo desc, fabricOne asc, date asc;'
+		'Date'			: 'select * from tasks where '+seatSewerParts+' order by locked asc, date asc;',
+		'Part'			: 'select * from tasks where '+seatSewerParts+' order by locked asc, part asc, date asc;',
+		'Pattern'		: 'select * from tasks where '+seatSewerParts+' order by locked asc, pattern asc, date asc;',
+		'Material'		: 'select * from tasks where '+seatSewerParts+' order by locked asc, fabricOne asc, fabricTwo asc, date asc;',
+		'TrimMaterial'		: 'select * from tasks where '+seatSewerParts+' order by locked asc, fabricTwo asc, fabricOne asc, date asc;',
+		'DateDesc'		: 'select * from tasks where '+seatSewerParts+' order by locked asc, date desc;',
+		'PartDesc'		: 'select * from tasks where '+seatSewerParts+' order by locked asc, part desc, date asc;',
+		'PatternDesc'		: 'select * from tasks where '+seatSewerParts+' order by locked asc, pattern desc, date asc;',
+		'MaterialDesc'		: 'select * from tasks where '+seatSewerParts+' order by locked asc, fabricOne desc, fabricTwo asc, date asc;',
+		'TrimMaterialDesc'	: 'select * from tasks where '+seatSewerParts+' order by locked asc, fabricTwo desc, fabricOne asc, date asc;'
 	},
 	'/carpetSewers'	: {
-		'Date'			: 'select * from tasks where '+carpetSewerParts+' order by date asc;',
-		'Part'			: 'select * from tasks where '+carpetSewerParts+' order by part asc, date asc;',
-		'Pattern'		: 'select * from tasks where '+carpetSewerParts+' order by pattern asc, date asc;',
-		'Material'		: 'select * from tasks where '+carpetSewerParts+' order by fabricOne asc, fabricTwo asc, date asc;',
-		'TrimMaterial'		: 'select * from tasks where '+carpetSewerParts+' order by fabricTwo asc, fabricOne asc, date asc;',
-		'DateDesc'		: 'select * from tasks where '+carpetSewerParts+' order by date desc;',
-		'PartDesc'		: 'select * from tasks where '+carpetSewerParts+' order by part desc, date asc;',
-		'PatternDesc'		: 'select * from tasks where '+carpetSewerParts+' order by pattern desc, date asc;',
-		'MaterialDesc'		: 'select * from tasks where '+carpetSewerParts+' order by fabricOne desc, fabricTwo asc, date asc;',
-		'TrimMaterialDesc'	: 'select * from tasks where '+carpetSewerParts+' order by fabricTwo desc, fabricOne asc, date asc;'
+		'Date'			: 'select * from tasks where '+carpetSewerParts+' order by locked asc, date asc;',
+		'Part'			: 'select * from tasks where '+carpetSewerParts+' order by locked asc, part asc, date asc;',
+		'Pattern'		: 'select * from tasks where '+carpetSewerParts+' order by locked asc, pattern asc, date asc;',
+		'Material'		: 'select * from tasks where '+carpetSewerParts+' order by locked asc, fabricOne asc, fabricTwo asc, date asc;',
+		'TrimMaterial'		: 'select * from tasks where '+carpetSewerParts+' order by locked asc, fabricTwo asc, fabricOne asc, date asc;',
+		'DateDesc'		: 'select * from tasks where '+carpetSewerParts+' order by locked asc, date desc;',
+		'PartDesc'		: 'select * from tasks where '+carpetSewerParts+' order by locked asc, part desc, date asc;',
+		'PatternDesc'		: 'select * from tasks where '+carpetSewerParts+' order by locked asc, pattern desc, date asc;',
+		'MaterialDesc'		: 'select * from tasks where '+carpetSewerParts+' order by locked asc, fabricOne desc, fabricTwo asc, date asc;',
+		'TrimMaterialDesc'	: 'select * from tasks where '+carpetSewerParts+' order by locked asc, fabricTwo desc, fabricOne asc, date asc;'
 	},
 	'/miscCutters'	: {
-		'Date'			: 'select * from tasks where '+miscCutterParts+' order by date asc;',
-		'Part'			: 'select * from tasks where '+miscCutterParts+' order by part asc, date asc;',
-		'Pattern'		: 'select * from tasks where '+miscCutterParts+' order by pattern asc, date asc;',
-		'Material'		: 'select * from tasks where '+miscCutterParts+' order by fabricOne asc, fabricTwo asc, date asc;',
-		'TrimMaterial'		: 'select * from tasks where '+miscCutterParts+' order by fabricTwo asc, fabricOne asc, date asc;',
-		'DateDesc'		: 'select * from tasks where '+miscCutterParts+' order by date desc;',
-		'PartDesc'		: 'select * from tasks where '+miscCutterParts+' order by part desc, date asc;',
-		'PatternDesc'		: 'select * from tasks where '+miscCutterParts+' order by pattern desc, date asc;',
-		'MaterialDesc'		: 'select * from tasks where '+miscCutterParts+' order by fabricOne desc, fabricTwo asc, date asc;',
-		'TrimMaterialDesc'	: 'select * from tasks where '+miscCutterParts+' order by fabricTwo desc, fabricOne asc, date asc;'
+		'Date'			: 'select * from tasks where '+miscCutterParts+' order by locked asc, date asc;',
+		'Part'			: 'select * from tasks where '+miscCutterParts+' order by locked asc, part asc, date asc;',
+		'Pattern'		: 'select * from tasks where '+miscCutterParts+' order by locked asc, pattern asc, date asc;',
+		'Material'		: 'select * from tasks where '+miscCutterParts+' order by locked asc, fabricOne asc, fabricTwo asc, date asc;',
+		'TrimMaterial'		: 'select * from tasks where '+miscCutterParts+' order by locked asc, fabricTwo asc, fabricOne asc, date asc;',
+		'DateDesc'		: 'select * from tasks where '+miscCutterParts+' order by locked asc, date desc;',
+		'PartDesc'		: 'select * from tasks where '+miscCutterParts+' order by locked asc, part desc, date asc;',
+		'PatternDesc'		: 'select * from tasks where '+miscCutterParts+' order by locked asc, pattern desc, date asc;',
+		'MaterialDesc'		: 'select * from tasks where '+miscCutterParts+' order by locked asc, fabricOne desc, fabricTwo asc, date asc;',
+		'TrimMaterialDesc'	: 'select * from tasks where '+miscCutterParts+' order by locked asc, fabricTwo desc, fabricOne asc, date asc;'
 	},
 	'/gluers'	:{
-		'Date'			: 'select * from tasks where '+gluerParts+' order by date asc;',
-		'Part'			: 'select * from tasks where '+gluerParts+' order by part asc, date asc;',
-		'Pattern'		: 'select * from tasks where '+gluerParts+' order by pattern asc, date asc;',
-		'Material'		: 'select * from tasks where '+gluerParts+' order by fabricOne asc, fabricTwo asc, date asc;',
-		'TrimMaterial'		: 'select * from tasks where '+gluerParts+' order by fabricTwo asc, fabricOne asc, date asc;',
-		'DateDesc'		: 'select * from tasks where '+gluerParts+' order by date desc;',
-		'PartDesc'		: 'select * from tasks where '+gluerParts+' order by part desc, date asc;',
-		'PatternDesc'		: 'select * from tasks where '+gluerParts+' order by pattern desc, date asc;',
-		'MaterialDesc'		: 'select * from tasks where '+gluerParts+' order by fabricOne desc, fabricTwo asc, date asc;',
-		'TrimMaterialDesc'	: 'select * from tasks where '+gluerParts+' order by fabricTwo desc, fabricOne asc, date asc;'
+		'Date'			: 'select * from tasks where '+gluerParts+' order by locked asc, date asc;',
+		'Part'			: 'select * from tasks where '+gluerParts+' order by locked asc, part asc, date asc;',
+		'Pattern'		: 'select * from tasks where '+gluerParts+' order by locked asc, pattern asc, date asc;',
+		'Material'		: 'select * from tasks where '+gluerParts+' order by locked asc, fabricOne asc, fabricTwo asc, date asc;',
+		'TrimMaterial'		: 'select * from tasks where '+gluerParts+' order by locked asc, fabricTwo asc, fabricOne asc, date asc;',
+		'DateDesc'		: 'select * from tasks where '+gluerParts+' order by locked asc, date desc;',
+		'PartDesc'		: 'select * from tasks where '+gluerParts+' order by locked asc, part desc, date asc;',
+		'PatternDesc'		: 'select * from tasks where '+gluerParts+' order by locked asc, pattern desc, date asc;',
+		'MaterialDesc'		: 'select * from tasks where '+gluerParts+' order by locked asc, fabricOne desc, fabricTwo asc, date asc;',
+		'TrimMaterialDesc'	: 'select * from tasks where '+gluerParts+' order by locked asc, fabricTwo desc, fabricOne asc, date asc;'
 	},
 	'/foamers'	: { 
-		'Date'			: 'select * from tasks where '+foamerParts+' order by date asc;',
-		'Part'			: 'select * from tasks where '+foamerParts+' order by part asc, date asc;',
-		'Pattern'		: 'select * from tasks where '+foamerParts+' order by pattern asc, date asc;',
-		'Material'		: 'select * from tasks where '+foamerParts+' order by fabricOne asc, fabricTwo asc, date asc;',
-		'TrimMaterial'		: 'select * from tasks where '+foamerParts+' order by fabricTwo asc, fabricOne asc, date asc;',
-		'DateDesc'		: 'select * from tasks where '+foamerParts+' order by date desc;',
-		'PartDesc'		: 'select * from tasks where '+foamerParts+' order by part desc, date asc;',
-		'PatternDesc'		: 'select * from tasks where '+foamerParts+' order by pattern desc, date asc;',
-		'MaterialDesc'		: 'select * from tasks where '+foamerParts+' order by fabricOne desc, fabricTwo asc, date asc;',
-		'TrimMaterialDesc'	: 'select * from tasks where '+foamerParts+' order by fabricTwo desc, fabricOne asc, date asc;'
+		'Date'			: 'select * from tasks where '+foamerParts+' order by locked asc, date asc;',
+		'Part'			: 'select * from tasks where '+foamerParts+' order by locked asc, part asc, date asc;',
+		'Pattern'		: 'select * from tasks where '+foamerParts+' order by locked asc, pattern asc, date asc;',
+		'Material'		: 'select * from tasks where '+foamerParts+' order by locked asc, fabricOne asc, fabricTwo asc, date asc;',
+		'TrimMaterial'		: 'select * from tasks where '+foamerParts+' order by locked asc, fabricTwo asc, fabricOne asc, date asc;',
+		'DateDesc'		: 'select * from tasks where '+foamerParts+' order by locked asc, date desc;',
+		'PartDesc'		: 'select * from tasks where '+foamerParts+' order by locked asc, part desc, date asc;',
+		'PatternDesc'		: 'select * from tasks where '+foamerParts+' order by locked asc, pattern desc, date asc;',
+		'MaterialDesc'		: 'select * from tasks where '+foamerParts+' order by locked asc, fabricOne desc, fabricTwo asc, date asc;',
+		'TrimMaterialDesc'	: 'select * from tasks where '+foamerParts+' order by locked asc, fabricTwo desc, fabricOne asc, date asc;'
 	}
 };
 
@@ -376,6 +376,11 @@ http.createServer(function (req,res){
 						console.log(err);
 						return;
 					}
+					//update the tracking table
+					activeDB.query('insert into tracking values(?,?,localtime());',[q.query.taskId,cookieJar.get('username',{signed:true})],(err,result)=>{
+						if(err) console.log(err);
+					});
+
 
 				});
 			});
@@ -405,11 +410,33 @@ http.createServer(function (req,res){
 						
 						outputHTML +='<button class="lock" onclick="window.location=\'/taskView?taskId='+q.query.taskId+'&action=lock\'">Lock</button>'+
 							'<button class="complete" onclick="window.location=\'/taskView?taskId='+q.query.taskId+'&action=complete\'">Complete</button>';
-						res.writeHead(200, '{"Content-Type": "text/html"}');
-						res.write(data+
-							outputHTML+
-							data2);
-						res.end();
+						activeDB.query('select * from tracking where taskId=? order by date asc',[q.query.taskId],(err,result) => {
+							outputHTML += '<div class="taskElements"><table><tr><th>Employee</th><th>Date</th></tr>'
+							if(!result[0]){
+
+								res.writeHead(200, '{"Content-Type": "text/html"}');
+								res.write(data+
+									outputHTML+
+									'</table></div>'+
+									data2);
+								res.end();
+								return;
+							}
+							result.foreach((item,i,array) => {
+								outputHTML+='<tr><td>'+item.user+'</td><td>'+(result[0].date.getMonth()+1)+'/'+result[0].date.getDate()+'</td></tr>'
+								
+								if(i==array.length-1){
+									res.writeHead(200, '{"Content-Type": "text/html"}');
+									res.write(data+
+										outputHTML+
+										'</table></div>'+
+										data2);
+									res.end();
+									return;
+
+								}
+							});
+						});
 					});
 				});
 			});
@@ -503,16 +530,17 @@ http.createServer(function (req,res){
 
 					res.writeHead(200, '{"Content-Type": "text/html","Cache-Control": "no-store", "must-revalidate", "max-age=0"}');
 					res.write(data);res.write(outputHTML);
-					//add table row for each reccord returned by sql query
+					//end response if no results
 					if(! result[0]){
 						res.write('</table>'+
 							data2);
 						res.end();
 						return;
 					}
+					//add table row for each record returned by sql query
 					result.forEach((item, i ,array) => {
 						activeDB.query('select * from orders where orderId=?;',[item.orderId], (err,order)=>{
-							outputHTML = '<tr class="taskRow" onclick="window.location=\'/taskView?taskId='+item.taskId+'\';"><td>'+
+							outputHTML = '<tr class="taskRow '+(item.locked?"locked":"")+'" onclick="window.location=\'/taskView?taskId='+item.taskId+'\';"><td>'+
 								item.part+
 								'</td><td>'+(order[0].date.getMonth()+1)+'/'+order[0].date.getDate()+
 								'</td><td>'+item.pattern+
