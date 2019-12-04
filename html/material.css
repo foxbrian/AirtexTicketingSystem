@@ -163,3 +163,11 @@ button, input{
 .firstName, .lastName, .shippingAddress{
 	margin-left: 21vw;
 }
+.loginbad{
+	text-align: center;
+}
+.noTasks, .noResults{
+	text-align: center;
+	font-size: 3em;
+	text-transform: capitalize;
+}
