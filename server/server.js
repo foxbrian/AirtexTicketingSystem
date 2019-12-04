@@ -422,7 +422,7 @@ http.createServer(function (req,res){
 								res.end();
 								return;
 							}
-							result.foreach((item,i,array) => {
+							result.forEach((item,i,array) => {
 								outputHTML+='<tr><td>'+item.user+'</td><td>'+(result[0].date.getMonth()+1)+'/'+result[0].date.getDate()+'</td></tr>'
 								
 								if(i==array.length-1){
